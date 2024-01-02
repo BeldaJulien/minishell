@@ -1,0 +1,43 @@
+#include "minishell.h"
+
+int	ft_is_builtin(t_command *cmd)
+{
+	if (!cmd->name)
+	{
+		ft_putstr_fd("command not found\n", 2);
+		return (127);
+	}
+	if (ft_strcmp(cmd->name, "cd") == 0
+		|| ft_strcmp(cmd->name, "echo") == 0
+		|| ft_strcmp(cmd->name, "env") == 0
+		|| ft_strcmp(cmd->name, "exit") == 0
+		|| ft_strcmp(cmd->name, "export") == 0
+		|| ft_strcmp(cmd->name, "pwd") == 0
+		|| ft_strcmp(cmd->name, "unset") == 0)
+		return (1);
+	return (0);
+}
+
+int	ft_execute_builtin(t_command *cmd, t_env **envList)
+{
+	t_command	export_command;
+
+	if (ft_strcmp(cmd->name, "cd") == 0)
+		return (cd(cmd));
+	else if (ft_strcmp(cmd->name, "echo") == 0)
+		return (echo(cmd));
+	else if (ft_strcmp(cmd->name, "env") == 0)
+		return (env(envList));
+	else if (ft_strcmp(cmd->name, "pwd") == 0)
+		return (pwd());
+	else if (ft_strcmp(cmd->name, "unset") == 0)
+		return (ft_unset(envList, cmd));
+	else if (ft_strcmp(cmd->name, "export") == 0)
+	{
+		export_command.name = "export";
+		export_command.args = cmd->args;
+		ft_export(envList, &export_command);
+	}
+	fprintf(stderr, "Unknown builtin command: %s\n", cmd->name);
+	return (-1);
+}
