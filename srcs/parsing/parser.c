@@ -6,7 +6,7 @@
 /*   By: julienbelda <julienbelda@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 13:44:27 by bat               #+#    #+#             */
-/*   Updated: 2024/01/02 16:13:02 by julienbelda      ###   ########.fr       */
+/*   Updated: 2024/01/03 16:36:54 by julienbelda      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,30 +103,43 @@ void process_argument(t_commandList *commandList, t_command *command, char *toke
 int ft_split_arg(t_commandList *commandList, char *input) 
 {
     char *token;
-    int argIndex;
+    int argIndex = 0;
     token = ft_strtok(input, " ");
 
     if (token == NULL) 
     {
         fprintf(stderr, "An error occurred: Empty command\n");
         return 0;
-    } 
-
+    }
     // Traitement du premier token comme une commande
     process_command(commandList, token, 0);
-    argIndex = 0;
+    argIndex++;
 
     while ((token = ft_strtok(NULL, " ")) != NULL) 
     {
+        // Si la commande est cd, traitez le premier argument différemment
+        if (argIndex == 1 && strcmp(commandList->tail->name, "cd") == 0) 
+        {
+            process_cd_argument(commandList->tail, token);
+            break;
+        }
+
         printf("Processing argument %d: %s\n", argIndex, token);
         process_argument(commandList, commandList->tail, token, argIndex);
         argIndex++;
     }
-
     // Ajoutez une chaîne NULL à la fin du tableau d'arguments
     process_argument(commandList, commandList->tail, NULL, argIndex);
 
     return commandList->length;
+}
+
+void process_cd_argument(t_command *command, char *arg) 
+{
+    // Assurez-vous que la structure t_command est correctement initialisée avec les arguments
+    command->args = malloc(2 * sizeof(char *));
+    command->args[0] = strdup(arg);
+    command->args[1] = NULL;
 }
 
 int ft_launch_parsing(t_commandList *commandList, char *input, t_env **envList, char **envp)
@@ -171,8 +184,6 @@ int ft_launch_parsing(t_commandList *commandList, char *input, t_env **envList, 
         return 0;
     }
 }
-
-
 
 
 /* int ft_split_arg(t_commandList *commandList, char *input) 
