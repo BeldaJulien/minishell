@@ -74,3 +74,5 @@ int main(int ac, char **av, char **envp)
     ft_exit_shell(&shell);
     return 0;
 }
+
+//yo bapt
