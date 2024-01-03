@@ -183,7 +183,7 @@ void	    ft_exit_shell(t_mini *shell);
 void        ft_initialize_commandList(t_commandList *commandList);
 t_env       *ft_initialize_environment(char **env);
 void	    ft_initialize_minishell(t_mini *shell, t_env **env);
-t_env       *ft_initialize_all(t_mini *shell, char **envp);
+t_env *ft_initialize_all(t_mini *shell, char **envp);
 // history & prompt
 void	    ft_custom_prompt_msg(t_mini *shell);
 void        ft_manage_history(t_mini *shell, const char *input);
@@ -316,6 +316,7 @@ char *ft_strtok_quoted(char *str, const char *delim);
 void ft_execute_command_with_path(t_command *command);
 void process_command(t_commandList *commandList, char *token, int tokenIndex);
 void process_argument(t_commandList *commandList, t_command *command, char *token, int argIndex);
+void process_cd_argument(t_command *command, char *arg);
 
 
 

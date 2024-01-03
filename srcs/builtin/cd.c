@@ -8,6 +8,13 @@ int cd(t_command *command)
         return 0;
     }
 
+    // Traitement spécial pour la commande cd
+    if (command->args[1] != NULL)
+    {
+        printf("minishell: cd: too many arguments\n");
+        return 1;
+    }
+
     if (chdir(command->args[0]) == -1)
     {
         printf("minishell: cd: %s: No such file or directory\n", command->args[0]);
