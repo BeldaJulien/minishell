@@ -1,33 +1,32 @@
 #include "minishell.h"
 
-int echo(t_command *cmd) {
-    const char *message = "An error occurred: not enough arguments\n";
-
-    if (cmd->args == NULL || cmd->args[0] == NULL) {
+int echo(t_command *cmd) 
+{
+    const char *message;
+    int i;
+    int suppressNewline;
+    
+    message = "An error occurred: not enough arguments\n";
+    i = 1;
+    suppressNewline = 0;
+    if (cmd == NULL || cmd->args == NULL) 
+    {
         write(STDERR_FILENO, message, strlen(message));
         return 1;
     }
-
-    int i = 0;
-    int suppressNewline = 0;
-
-    // Vérifier si la première option est -n
-    if (strcmp(cmd->args[0], "-n") == 0) {
+    if (cmd->args[1] != NULL && strcmp(cmd->args[1], "-n") == 0) 
+    {
         suppressNewline = 1;
-        i++;  // Ignorer l'option -n
+        i++;
     }
-
-    while (cmd->args[i] != NULL) {
+    while (cmd->args[i] != NULL) 
+    {
         write(STDOUT_FILENO, cmd->args[i], strlen(cmd->args[i]));
         if (cmd->args[i + 1] != NULL)
             write(STDOUT_FILENO, " ", 1);
         i++;
     }
-
-    // Ajouter une nouvelle ligne à la fin de la sortie seulement si -n n'est pas spécifié
-    if (!suppressNewline) {
+    if (!suppressNewline) 
         write(STDOUT_FILENO, "\n", 1);
-    }
-
     return 0;
 }

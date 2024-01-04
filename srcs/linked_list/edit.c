@@ -16,7 +16,7 @@ int	ft_add_envVar_to_list(t_env **envlist, char *args)
 	new_node = ft_create_node(args);
 	if (!new_node)
 		return (0);
-	if (!ft_is_in_lst(new_node->var, envlist))
+	if (!ft_is_in_lst(new_node->name, envlist))
 		ft_add_to_list(envlist, new_node);
 	else
 		ft_replace_in_list(new_node, envlist);
@@ -27,7 +27,7 @@ void ft_replace_in_list(t_env *new_node, t_env **envlist)
 {
 	t_env	*tmp;
 
-	tmp = ft_get_in_list(new_node->var, envlist);
+	tmp = ft_get_in_list(new_node->name, envlist);
 	if (tmp)
 		ft_free_env_node(new_node, tmp, new_node->value);
 }

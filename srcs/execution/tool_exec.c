@@ -21,7 +21,7 @@ t_env *ft_copy_env_list(t_env *src)
 
     while (src != NULL)
     {
-        t_env *new_node = create_node2(src->var, src->value);
+        t_env *new_node = create_node2(src->name, src->value);
         if (new_node != NULL)
         {
             if (last == NULL)
@@ -45,7 +45,7 @@ t_env *create_node2(char *var, char *value)
 
     if (new_node)
     {
-        new_node->var = ft_strdup(var);
+        new_node->name = ft_strdup(var);
         new_node->value = ft_strdup(value); // Assurez-vous que value est une chaîne de caractères
         new_node->next = NULL;
         return new_node;

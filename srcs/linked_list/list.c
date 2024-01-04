@@ -16,7 +16,7 @@ int	ft_is_in_list(char	*var, t_env **envlist)
 	tmp = *envlist;
 	if (tmp == NULL || var == NULL)
 		return (0);
-	while (tmp != NULL && ft_strcmp(tmp->var, var) != 0)
+	while (tmp != NULL && ft_strcmp(tmp->name, var) != 0)
 		tmp = tmp->next;
 	return (tmp != NULL);
 }
@@ -41,7 +41,7 @@ t_env	*ft_get_in_list(char *var, t_env **envlist)
 	tmp = *envlist;
 	if (tmp == NULL || var == NULL)
 		return (NULL);
-	while (tmp != NULL && ft_strcmp(tmp->var, var) != 0)
+	while (tmp != NULL && ft_strcmp(tmp->name, var) != 0)
 		tmp = tmp->next;
 	if (tmp)
 		return (tmp);

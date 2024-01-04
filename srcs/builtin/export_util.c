@@ -24,9 +24,9 @@ void ft_print_export_list(t_env **envlist)
 	tmp = sort_list;
 	while (tmp != NULL)
 	{
-		if (tmp->var != NULL)
+		if (tmp->name != NULL)
 		{
-			ft_putstr_fd(tmp->var, 1);
+			ft_putstr_fd(tmp->name, 1);
 			write(1, "=", 1);
 			ft_putstr_fd(tmp->value, 1);
 		}
@@ -65,7 +65,7 @@ int	ft_is_in_lst(char	*var, t_env **envlist)
 	tmp = *envlist;
 	if (tmp == NULL || var == NULL)
 		return (0);
-	while (tmp != NULL && ft_strcmp(tmp->var, var) != 0)
+	while (tmp != NULL && ft_strcmp(tmp->name, var) != 0)
 		tmp = tmp->next;
 	return (tmp != NULL);
 }
@@ -74,7 +74,7 @@ void	replace_in_lst(t_env *new_node, t_env **envlist)
 {
 	t_env	*tmp;
 
-	tmp = ft_get_in_list(new_node->var, envlist);
+	tmp = ft_get_in_list(new_node->name, envlist);
 	if (tmp)
 		ft_free_env_node(new_node, tmp, new_node->value);
 }
@@ -86,7 +86,7 @@ int	ft_add_var_to_list(t_env **envlist, char *args)
 	new_node = ft_create_node(args);
 	if (!new_node)
 		return (0);
-	if (!ft_is_in_lst(new_node->var, envlist))
+	if (!ft_is_in_lst(new_node->name, envlist))
 		ft_add_to_list(envlist, new_node);
 	else
 		ft_replace_in_list(new_node, envlist);
@@ -104,7 +104,7 @@ t_env	*ft_create_node(char *var_array)
 	{
 		while (var_array[i] != '=' && var_array[i] != '\0')
 			i++;
-		new_node->var = ft_substr(var_array, 0, i);
+		new_node->name = ft_substr(var_array, 0, i);
 
 		if (var_array[i] == '\0')
 		{

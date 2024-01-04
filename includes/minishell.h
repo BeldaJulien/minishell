@@ -105,7 +105,6 @@ typedef struct s_error
 typedef struct s_env
 {
     char *name;
-    char *var;
     char *value;
     char **g_env;
     struct s_env *next;
@@ -182,8 +181,8 @@ void	    ft_exit_shell(t_mini *shell);
 void	    ft_exit_shell(t_mini *shell);
 void        ft_initialize_commandList(t_commandList *commandList);
 t_env       *ft_initialize_environment(char **env);
-void	    ft_initialize_minishell(t_mini *shell, t_env **env);
-t_env *ft_initialize_all(t_mini *shell, char **envp);
+void	    ft_initialize_minishell(t_mini *shell);
+t_env       *ft_initialize_all(t_mini *shell, char **envp, t_env *envList);
 // history & prompt
 void	    ft_custom_prompt_msg(t_mini *shell);
 void        ft_manage_history(t_mini *shell, const char *input);
@@ -202,6 +201,7 @@ void        ft_print_command(void *data);
 void        ft_print_list(t_commandList *head, void (*printFunction)(void *data));
 
 // clean
+void        ft_free_envList(t_env *envList);
 void        ft_free_list(t_commandList  *head);
 void        ft_delete_list(t_env *envlist);
 void        ft_free_node(t_command  *node);
@@ -232,7 +232,7 @@ t_env       *ft_find_envVar(t_envList *envList, const char *targetName);
 // PARSING
 t_token_type    ft_allocate_token_type(char *token);
 int             ft_split_arg(t_commandList *commandList, char *input);
-int             ft_launch_parsing(t_commandList *commandList, char *input ,t_env **envList, char **envp);
+int             ft_launch_parsing(t_commandList *commandList, char *input ,t_env *envList, char **envp);
 char            *ft_strtrim_with_quotes(char *str);
 char            *ft_strcpy(char *dest, const char *src);
 char            *ft_strndup(const char *s, size_t n);
@@ -255,7 +255,7 @@ char            *ft_extract_quoted_argument(char *input);
 // EXECUTION
 // builtins
 int	    ft_is_builtin(t_command *cmd);
-int	    ft_execute_builtin(t_command *cmd, t_env **envList);
+int	    ft_execute_builtin(t_command *cmd, t_env *envList);
 // command
 void	ft_execute_command(t_command *command, t_env *envList);
 void    ft_execute_external_command(t_command *command, t_commandList *commandList, char **envp);
@@ -279,8 +279,9 @@ int		change_directory(const char *path);
 int	    cd(t_command *command);
 int     echo(t_command *cmd);
 int 	pwd(void);
-int 	env(t_env **env_list);
-int	    ft_unset(t_env **env_list, t_command *cmd);
+void    ft_display_envList(t_env *envList);
+int 	env(t_env *env_list);
+int	    ft_unset(t_env *env_list, t_command *cmd);
 char	**ft_env_duplicate(char **envp);
 int     ft_error_export(char *command, char *arg, char *message, int status);
 int		ft_check_wrong_char(char *str);

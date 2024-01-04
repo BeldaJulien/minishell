@@ -1,15 +1,34 @@
 #include "minishell.h"
 
-int	env(t_env **env_list)
+void ft_display_envList(t_env *envList) 
+{
+	t_env *current;
+
+	current = envList;
+    while (current != NULL) 
+	{
+        printf("%s=%s\n", current->name, current->value);
+        current = current->next;
+    }
+}
+
+int	env(t_env *envList)
+{
+	ft_display_envList(envList);
+	return (0);
+}
+
+/*
+int	env(t_env **envList)
 {
 	t_env	*tmp;
 
-	tmp = *env_list;
+	tmp = *envList;
 	while (tmp != NULL)
 	{
-		if (tmp->var != NULL && tmp->value != NULL)
+		if (tmp->name != NULL && tmp->value != NULL)
 		{
-			ft_putstr_fd(tmp->var, 1);
+			ft_putstr_fd(tmp->name, 1);
 			write(1, "=", 1);
 			ft_putstr_fd(tmp->value, 1);
 			write(1, "\n", 1);
@@ -18,3 +37,4 @@ int	env(t_env **env_list)
 	}
 	return (0);
 }
+*/

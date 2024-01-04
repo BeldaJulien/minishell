@@ -39,40 +39,41 @@ int main(int ac, char **av, char **envp)
     t_env *envList;
     t_commandList commandList;
     
-    
     (void)av;
-    if (ac > 1) {
+    if (ac > 1) 
+    {
         fprintf(stderr, "CHAOS, there are too many arguments\n");
         return 1;
     }
-    envList = NULL;
-    envList = ft_initialize_environment(envp);
     
-    ft_initialize_all(&shell, envp);
+    envList = NULL;
+    envList = ft_initialize_all(&shell, envp, envList);
 
     while (1) 
     {
         // TO DO add signals here
         ft_custom_prompt_msg(&shell);
 
-        if (shell.av == NULL) {
+        if (shell.av == NULL) 
+        {
             printf("Stop shell\n");
             break;
         }
 
         ft_manage_history(&shell, shell.av);
 
-        if (ft_check_only_spaces(shell.av) == TRUE) {   
+        if (ft_check_only_spaces(shell.av) == TRUE) 
+        {   
             ft_destroy_current_shell(&shell);
             continue;
         } 
-        else if (ft_strcmp(shell.av, "") != 0) {
-            ft_launch_parsing(&commandList, shell.av, &envList, envp);
+        else if (ft_strcmp(shell.av, "") != 0) 
+        {
+            ft_launch_parsing(&commandList, shell.av, envList, envp);
             ft_destroy_current_shell(&shell);
         }
     }
+    ft_free_envList(envList);
     ft_exit_shell(&shell);
     return 0;
 }
-
-//yo bapt

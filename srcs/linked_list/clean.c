@@ -36,7 +36,7 @@ void ft_delete_list(t_env *envlist)
 		return ;
 	while (tmp != NULL)
 	{
-		free(tmp->var);
+		free(tmp->name);
 		free(tmp->value);
 		node = tmp->next;
 		free(tmp);
@@ -64,7 +64,7 @@ void    ft_free_env_node(t_env *new_node, t_env *tmp, char *str)
 {
 	free(tmp->value);
 	tmp->value = ft_strdup(str);
-	free(new_node->var);
+	free(new_node->name);
 	free(new_node->value);
 	free(new_node);
 }
@@ -88,4 +88,19 @@ void ft_delete_node(t_commandList **head, t_command *node)
     node->next = NULL;
 
     free(node);
+}
+
+void ft_free_envList(t_env *envList) 
+{
+    t_env *temp;
+    while (envList != NULL) 
+    {
+        temp = envList;
+        envList = envList->next;
+        free(temp->name);
+        free(temp->value);
+        free(temp->next);
+        free(temp->prev);
+        free(temp); // Libération de la mémoire pour le nœud
+    }
 }

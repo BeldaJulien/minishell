@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: julienbelda <julienbelda@student.42.fr>    +#+  +:+       +#+        */
+/*   By: bat <bat@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 13:44:27 by bat               #+#    #+#             */
-/*   Updated: 2024/01/03 16:36:54 by julienbelda      ###   ########.fr       */
+/*   Updated: 2024/01/04 17:49:46 by bat              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,6 @@ void process_command(t_commandList *commandList, char *token, int tokenIndex)
 
     command->name = ft_strdup(token);
     command->tokenType = ft_check_and_allocate_token_type(token, tokenIndex);
-
-    // Allouer de la mémoire pour les arguments
     command->args = (char **)malloc(sizeof(char *) * 2);
     if (command->args == NULL) 
     {
@@ -48,7 +46,6 @@ void process_command(t_commandList *commandList, char *token, int tokenIndex)
     command->args[0] = ft_strdup(token);
     command->args[1] = NULL;
 
-    // Ajouter la commande à la fin de la liste
     if (commandList->head == NULL) 
     {
         commandList->head = command;
@@ -59,7 +56,6 @@ void process_command(t_commandList *commandList, char *token, int tokenIndex)
         commandList->tail->next = command;
         commandList->tail = commandList->tail->next;
     }
-
     commandList->length++;
 }
 
@@ -118,7 +114,7 @@ int ft_split_arg(t_commandList *commandList, char *input)
     while ((token = ft_strtok(NULL, " ")) != NULL) 
     {
         // Si la commande est cd, traitez le premier argument différemment
-        if (argIndex == 1 && strcmp(commandList->tail->name, "cd") == 0) 
+        if (argIndex == 1 && ft_strcmp(commandList->tail->name, "cd") == 0) 
         {
             process_cd_argument(commandList->tail, token);
             break;
@@ -142,22 +138,23 @@ void process_cd_argument(t_command *command, char *arg)
     command->args[1] = NULL;
 }
 
-int ft_launch_parsing(t_commandList *commandList, char *input, t_env **envList, char **envp)
+int ft_launch_parsing(t_commandList *commandList, char *input, t_env *envList, char **envp)
 {
+    t_command *command;
     ft_initialize_commandList(commandList);
 
     if (ft_split_arg(commandList, input) > 0) 
     {
+        
         if (commandList != NULL && commandList->head != NULL) 
         {
-            printf("Parsing succeeded. Commands:\n");
             ft_print_list(commandList, ft_print_command);
 
-            t_command *command = commandList->head;
+            command = commandList->head;
 
             if (ft_is_builtin(command)) 
             {
-                printf("Built-in. Command: %s\n", command->name);
+                printf("Built-in found. Launch execute builtin of command : %s\n", command->name);
                 ft_execute_builtin(command, envList);
             } 
             else if (command->name[0] == '.' || command->name[0] == '/') 

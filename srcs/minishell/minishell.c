@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: julienbelda <julienbelda@student.42.fr>    +#+  +:+       +#+        */
+/*   By: bat <bat@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 13:45:17 by bat               #+#    #+#             */
-/*   Updated: 2024/01/03 16:55:20 by julienbelda      ###   ########.fr       */
+/*   Updated: 2024/01/04 18:00:19 by bat              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@ void ft_exit_shell(t_mini *shell)
 
 void ft_initialize_commandList(t_commandList *commandList) 
 {
-    if (commandList == NULL) {
+    if (commandList == NULL) 
+    {
         fprintf(stderr, "Error: NULL pointer in ft_init_commandList\n");
         exit(EXIT_FAILURE);
     }
@@ -49,9 +50,8 @@ t_env *ft_initialize_environment(char **env)
     return envList;
 }
 
-void ft_initialize_minishell(t_mini *shell, t_env **env)
+void ft_initialize_minishell(t_mini *shell)
 {
-    *env = NULL;
     shell->av = NULL;
     shell->numberOfCommands = 0;
     shell->fd_history = 0;
@@ -73,13 +73,14 @@ void ft_initialize_minishell(t_mini *shell, t_env **env)
     ft_write_inputrc();
 }
 
-t_env *ft_initialize_all(t_mini *shell, char **envp)
+t_env *ft_initialize_all(t_mini *shell, char **envp, t_env *envList)
 {
-    t_commandList commandList;
-    t_env *envList = ft_initialize_environment(envp);
-
-    ft_initialize_minishell(shell, &envList);
-    ft_initialize_commandList(&commandList);
+    //t_commandList commandList;
+    
+    envList = ft_initialize_environment(envp);
+    // ft_display_envList(envList); // test pour env working here
+    ft_initialize_minishell(shell);
+    //ft_initialize_commandList(&commandList);
 
     return envList;
 }
