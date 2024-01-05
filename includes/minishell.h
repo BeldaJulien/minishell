@@ -287,7 +287,9 @@ int     ft_error_export(char *command, char *arg, char *message, int status);
 int		ft_check_wrong_char(char *str);
 int 	ft_is_only_digit(char *str);
 int	    ft_is_sep(char c);
-void 	ft_exit(t_command *command);
+int	ft_exit(t_command *command, t_env *envList);
+int     ft_search_exit_arg_in_envList(t_command *command, t_env *envList);
+int     ft_check_exit_arg_value(char *value);
 int		ft_check_argument(char *name);
 int     ft_export(t_env **envlist, t_command *cmd);
 
