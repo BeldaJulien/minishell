@@ -6,7 +6,7 @@
 /*   By: bat <bat@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 13:45:17 by bat               #+#    #+#             */
-/*   Updated: 2024/01/04 18:00:19 by bat              ###   ########.fr       */
+/*   Updated: 2024/01/04 18:08:14 by bat              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,6 @@ t_env *ft_initialize_all(t_mini *shell, char **envp, t_env *envList)
     //t_commandList commandList;
     
     envList = ft_initialize_environment(envp);
-    // ft_display_envList(envList); // test pour env working here
     ft_initialize_minishell(shell);
     //ft_initialize_commandList(&commandList);
 
