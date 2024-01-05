@@ -25,7 +25,9 @@ int ft_search_exit_arg_in_envList(t_command *command, t_env *envList)
 
 int ft_check_exit_arg_value(char *value) 
 {
-    int num = ft_atoi(value);
+    int num;
+	
+	num = ft_atoi(value);
     if (num < 0 || num > 255) {
         perror("Exit arg number wrong. Must be between 0 to 255\n");
         exit(EXIT_FAILURE);
@@ -35,7 +37,9 @@ int ft_check_exit_arg_value(char *value)
 
 int ft_exit(t_command *command, t_env *envList) 
 {
-    int g_exit_code = 0;
+    int g_exit_code;
+	
+	g_exit_code = 0;
     if (command->argCount == 0) 
 	{
         exit(EXIT_SUCCESS);
