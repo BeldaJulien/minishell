@@ -7,7 +7,7 @@ int ft_search_exit_arg_in_envList(t_command *command, t_env *envList)
     
     while (current_node != NULL) 
 	{
-        if (strcmp(current_node->name, *command->args) == 0) 
+        if (ft_strcmp(current_node->name, *command->args) == 0) 
 		{
             if (!(ft_check_exit_arg_value(current_node->value))) 
 			{
