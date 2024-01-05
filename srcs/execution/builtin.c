@@ -20,7 +20,7 @@ int	ft_is_builtin(t_command *cmd)
 
 int	ft_execute_builtin(t_command *cmd, t_env *envList)
 {
-	t_command	export_command;
+	
 
 	if (ft_strcmp(cmd->name, "cd") == 0)
 		return (cd(cmd));
@@ -41,9 +41,7 @@ int	ft_execute_builtin(t_command *cmd, t_env *envList)
 		return (ft_unset(envList, cmd));
 	else if (ft_strcmp(cmd->name, "export") == 0)
 	{
-		export_command.name = "export";
-		export_command.args = cmd->args;
-		ft_export(&envList, &export_command);
+		ft_export(&envList, cmd);
 	}
 	fprintf(stderr, "Unknown builtin command: %s\n", cmd->name);
 	return (-1);
