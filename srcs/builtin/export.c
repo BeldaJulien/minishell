@@ -38,40 +38,40 @@ int ft_check_variable_definition(char *arg)
     return (0);
 }
 
-int ft_check_export_args(t_command *command)
- {
-    char *arg;
-    int i;
+// int ft_check_export_args(t_command *command)
+//  {
+//     char *arg;
+//     int i;
 
-    if (command->argCount > 1) 
-    {
-        perror("Hey, export takes only one argument!\n");
-        exit(EXIT_FAILURE);
-    }
-    i = 0;
-    arg = command->args[1];
-    printf("command->args[0] value is: %s\n", command->args[0]);
-    printf("command->args[1] value is: %s\n", arg);
-    printf("ARG[0] value is: %c\n", arg[0]);
-    printf("ARG[1] value is: %c\n", arg[1]);
+//     if (command->argCount > 1) 
+//     {
+//         perror("Hey, export takes only one argument!\n");
+//         exit(EXIT_FAILURE);
+//     }
+//     i = 0;
+//     arg = command->args[1];
+//     printf("command->args[0] value is: %s\n", command->args[0]);
+//     printf("command->args[1] value is: %s\n", arg);
+//     printf("ARG[0] value is: %c\n", arg[0]);
+//     printf("ARG[1] value is: %c\n", arg[1]);
 
-    if ((!ft_is_alpha(arg[0])) || arg[0] != '_') 
-    {
-        perror("Export variable must start by a letter or _ \n");
-        exit(EXIT_FAILURE);
-    }
-    i = 1;
-    while (arg[i] != '\0') 
-    {
-        if (!ft_is_alpha(arg[i]) && arg[i] != '_') 
-        {
-            perror("Export variable must contain only letters, numbers, or _ \n");
-            exit(EXIT_FAILURE);
-        }
-        i++;
-    }
-    return 0;
-}
+//     /*if ((!ft_is_alpha(arg[0])) || arg[0] != '_') 
+//     {
+//         perror("Export variable must start by a letter or _ \n");
+//         exit(EXIT_FAILURE);
+//     }*/
+// //     i = 1;
+// //     while (arg[i] != '\0') 
+// //     {
+// //         if (!ft_is_alpha(arg[i]) && arg[i] != '_') 
+// //         {
+// //             perror("Export variable must contain only letters, numbers, or _ \n");
+// //             exit(EXIT_FAILURE);
+// //         }
+// //         i++;
+// //     }
+// //     return 0;
+// }
 
 void ft_print_exported_vars(t_env *envList) 
 {
@@ -99,17 +99,17 @@ int ft_export(t_env **envList, t_command *cmd)
     }
     ft_check_variable_definition(cmd->args[1]);
     ft_check_reserved_env_variables(cmd->name);
-    ft_check_export_args(cmd);
-    // printf("ft_check_export_args pass successfully\n");
+    // ft_check_export_args(cmd);
+    //printf("ft_check_export_args pass successfully\n");
     ft_split_string_export_argument(cmd->args[1], &name, &value);
     newVar = ft_create_node_for_export_argument(name, value);
     current = *envList;
     while (current != NULL)
     {
-        if (ft_strcmp(current->name, cmd->name) == 0)
+        if (ft_strcmp(current->name, name) == 0)
         {
             free(current->value);
-            current->value = ft_strdup(cmd->data);
+            current->value = ft_strdup(value);
             return (0);
         }
         current = current->next;

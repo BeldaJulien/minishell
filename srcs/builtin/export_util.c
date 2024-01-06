@@ -4,7 +4,7 @@ void ft_split_string_export_argument(const char *arg, char **name, char **value)
 {
     char *equals;
 	
-	equals = strchr(arg, '=');
+	equals = ft_strchr(arg, '=');
 
     if (equals != NULL) 
 	{
