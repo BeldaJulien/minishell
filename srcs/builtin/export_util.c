@@ -1,5 +1,23 @@
 #include "minishell.h" 
 
+void ft_split_string_export_argument(const char *arg, char **name, char **value) 
+{
+    char *equals;
+	
+	equals = strchr(arg, '=');
+
+    if (equals != NULL) 
+	{
+        *equals = '\0'; // Sépare la chaîne en deux au niveau du signe '='
+        *name = ft_strdup(arg); // La partie avant le '=' est le nom de la variable
+        *value = ft_strdup(equals + 1); // La partie après le '=' est la valeur de la variable
+    } else 
+	{
+        *name = NULL;
+        *value = NULL;
+    }
+}
+
 int ft_check_reserved_env_variables(const char *var_name)
 {
 	int i;

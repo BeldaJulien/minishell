@@ -93,6 +93,7 @@ void ft_delete_node(t_commandList **head, t_command *node)
 void ft_free_envList(t_env *envList) 
 {
     t_env *temp;
+    
     while (envList != NULL) 
     {
         temp = envList;

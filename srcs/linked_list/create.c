@@ -22,6 +22,25 @@ t_command *ft_create_node_for_command(void)
     return new_node_command;
 }
 
+t_env *ft_create_node_for_export_argument(char *name, char *value)
+{
+    t_env *new_node;
+    
+    new_node = malloc(sizeof(t_env));
+    if (new_node == NULL) 
+    {
+        perror("Memory allocation error in ft_create_node_export_argument\n");
+        exit(EXIT_FAILURE);
+    }
+
+    new_node->name = ft_strdup(name);
+    new_node->value = ft_strdup(value);
+    new_node->next = NULL;
+    
+    
+    return new_node;
+}
+
 t_env *ft_create_node_for_envVar(t_command *cmd)
 {
     t_env *new_node = malloc(sizeof(t_env));

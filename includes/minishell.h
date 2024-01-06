@@ -295,9 +295,11 @@ int		ft_check_argument(char *name);
 int     ft_export(t_env **envlist, t_command *cmd);
 void    ft_print_exported_vars(t_env *envList);
 int     ft_check_export_args(t_command *command);
-int     ft_check_variable_definition(const char *arg);
+int     ft_check_variable_definition(char *arg);
 int     ft_is_alpha(char c);
+void    ft_split_string_export_argument(const char *arg, char **name, char **value);
 int     ft_check_reserved_env_variables(const char *var_name);
+t_env   *ft_create_node_for_export_argument(char *name, char *value);
 
 // ENV_LIST
 t_env	*ft_create_node(char *var_array);
