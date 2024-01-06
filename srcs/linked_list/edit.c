@@ -1,35 +1,43 @@
 #include "minishell.h"
 
-void ft_add_to_list(t_env **envlist, t_env *new_node)
+void ft_add_to_list(t_env **envlist, t_env *new_node) 
 {
+    t_env *current; 
+
     if (!envlist || !new_node)
         return;
 
-    new_node->next = *envlist;
-    *envlist = new_node;
+    if (!*envlist) 
+    {
+        *envlist = new_node;
+        return;
+    }
+
+    current = *envlist;
+    while (current->next != NULL) 
+    {
+        current = current->next; 
+    }
+    current->next = new_node;
 }
 
-int	ft_add_envVar_to_list(t_env **envlist, char *args)
+
+void ft_replace_in_list(t_env *new_node, t_env **envlist) 
 {
-	t_env	*new_node;
-
-	new_node = ft_create_node(args);
-	if (!new_node)
-		return (0);
-	if (!ft_is_in_lst(new_node->name, envlist))
-		ft_add_to_list(envlist, new_node);
-	else
-		ft_replace_in_list(new_node, envlist);
-	return (1);
-}
-
-void ft_replace_in_list(t_env *new_node, t_env **envlist)
-{
-	t_env	*tmp;
-
-	tmp = ft_get_in_list(new_node->name, envlist);
-	if (tmp)
-		ft_free_env_node(new_node, tmp, new_node->value);
+    t_env *tmp = *envlist;
+    while (tmp) 
+    {
+        if (strcmp(tmp->name, new_node->name) == 0) 
+        {
+            free(tmp->value);
+            tmp->value = strdup(new_node->value);
+            free(new_node->name);
+            free(new_node->value);
+            free(new_node);
+            return;
+        }
+        tmp = tmp->next;
+    }
 }
 
 

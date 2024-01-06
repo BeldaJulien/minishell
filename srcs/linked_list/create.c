@@ -22,40 +22,29 @@ t_command *ft_create_node_for_command(void)
     return new_node_command;
 }
 
-t_env	*ft_create_node_for_envVar(char *var_array)
+t_env *ft_create_node_for_envVar(t_command *cmd)
 {
-	t_env	*new_node;
-	int		i;
+    t_env *new_node = malloc(sizeof(t_env));
+    if (new_node == NULL) 
+    {
+        perror("Memory allocation error");
+        exit(EXIT_FAILURE);
+    }
 
-	new_node = malloc(sizeof(t_env));
-	i = 0;
-	if (new_node)
-	{
-		while (var_array[i] != '=' && var_array[i] != '\0')
-			i++;
-		new_node->name = ft_substr(var_array, 0, i);
-
-		if (var_array[i] == '\0')
-			new_node->value = ft_strdup("");
-		else
-		{
-			i++; // Ignorer le caractère '='
-			new_node->value = ft_strdup(var_array + i);
-		}
-
-		new_node->next = NULL;
-		return new_node;
-	}
-	return NULL;
+    new_node->name = ft_strdup(cmd->name);
+    new_node->value = ft_strdup((char *)cmd->data);
+    new_node->next = NULL;
+    
+    return new_node;
 }
 
-void *ft_create_node_by_type(void *node, t_node_type type, char *var_array) 
+void *ft_create_node_by_type(void *node, t_node_type type, t_command *command) 
 {
     if (node == NULL) {
         exit(EXIT_FAILURE);
     }
     if (type == ENV_NODE) {
-        ft_create_node_for_envVar(var_array);
+        ft_create_node_for_envVar(command);
     } else if (type == COMMAND_NODE) {
         ft_create_node_for_command();
     }

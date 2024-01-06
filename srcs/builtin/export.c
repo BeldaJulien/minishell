@@ -1,62 +1,100 @@
 #include "minishell.h"
 
-int	check_args(char *name)
+int ft_is_alpha(char c) 
 {
-	if (!ft_check_wrong_char(name))
-		return (0);
-	if (!ft_is_only_digit(name))
-		return (0);
-	return (1);
+    if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'))
+    {
+        return (0);
+    }
+    return (1);
 }
 
-int	ft_error_export(char *command, char *arg, char *message, int status)
+int ft_check_variable_definition(const char *arg)
 {
-	ft_putstr_fd(command, STDERR_FILENO);
-	ft_putstr_fd(arg, STDERR_FILENO);
-	ft_putstr_fd(message, STDERR_FILENO);
-	return (status);
+    char *equals;
+    
+    equals = ft_strchr(arg, '=');
+    if (equals == NULL || equals == arg || equals[1] == '\0') 
+    {
+        perror("Invalid variable definition. Use VARIABLE=value format.\n");
+        exit(EXIT_FAILURE);
+    }
+    return (0);
 }
 
-int ft_check_wrong_char(char *str)
-{
+int ft_check_export_args(t_command *command)
+ {
+    char *arg;
     int i;
 
-    i = 0;
-    while (str[i])
+    if (command->argCount > 1) 
     {
-        if (i == 0 && str[i] == '=')
-            return (0); // Le signe égal n'est pas autorisé en première position
-        if (ft_is_sep(str[i]) || (str[i] >= 33 && str[i] <= 47))
-            return (0);
+        perror("Hey, export takes only one argument!\n");
+        exit(EXIT_FAILURE);
+    }
+    i = 0;
+    arg = command->args[1];
+    printf("args[0] is : %s\n", command->args[0]);
+    printf("args[1] is : %s\n", command->args[1]);
+    printf("arg is : %s\n", arg);
+    printf("arg[0] is : %c\n", arg[0]);
+    if ((!ft_is_alpha(arg[0])) || arg[0] != '_') 
+    {
+        perror("Export variable must start by a letter or _ \n");
+        exit(EXIT_FAILURE);
+    }
+    i = 1;
+    while (arg[i] != '\0') 
+    {
+        if (!ft_is_alpha(arg[i]) && arg[i] != '_') 
+        {
+            perror("Export variable must contain only letters, numbers, or _ \n");
+            exit(EXIT_FAILURE);
+        }
         i++;
     }
-    return (1);
+    ft_check_variable_definition(arg);
+    return 0;
 }
 
-
-int ft_export(t_env **envlist, t_command *cmd)
+void ft_print_exported_vars(t_env *envList) 
 {
-    if (cmd->name != NULL && cmd->args != NULL && cmd->args[0] != NULL && check_args(cmd->args[0]))
+    t_env *current;
+    
+    current = envList;
+    while (current != NULL) 
     {
-        printf("Exporting variable: %s\n", cmd->args[0]);
-
-        if (!check_args(cmd->args[0]))
-        {
-            printf("Export error: %s\n", cmd->args[0]);
-            return (ft_error_export("export: ", cmd->args[0], ": not a valid identifier", 1));
-        }
-
-        if (!ft_add_var_to_list(envlist, cmd->args[0]))
-        {
-            printf("Error adding variable to list\n");
-            return (-1);
-        }
+        printf("%s=%s\n", current->name, current->value);
+        current = current->next;
     }
-    else
-    {
-        printf("Printing export list\n");
-        ft_print_export_list(envlist);
-    }
-    return (1);
 }
 
+int ft_export(t_env **envList, t_command *cmd)
+{
+    t_env *current;
+    t_env *newVar;
+
+    if (ft_strcmp(cmd->name, "export") == 0 && cmd->argCount == 0)
+    {
+        ft_print_exported_vars(*envList);
+        return (0);
+    }
+    ft_check_export_args(cmd);
+    printf("ft_check_export_args pass successfully\n");
+    ft_check_reserved_env_variables(cmd->name);
+
+    current = *envList;
+    while (current != NULL)
+    {
+        if (ft_strcmp(current->name, cmd->name) == 0)
+        {
+            free(current->value);
+            current->value = ft_strdup(cmd->data);
+            return (0);
+        }
+        current = current->next;
+    }
+    newVar = ft_create_node_for_envVar(cmd);
+    ft_add_to_list(envList, newVar);
+    return (0);
+}

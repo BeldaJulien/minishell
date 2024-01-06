@@ -195,6 +195,7 @@ void        ft_init_terminal_settings(void);
 
 // LINKED LIST
 // add
+int	        ft_add_envVar_to_list(t_env **envlist, t_env *new_node, t_command *command);
 void        ft_appendToList(t_commandList *commandList, t_command *newCommand);
 void        ft_appendToListArg(t_command *command, char *arg);
 void        ft_print_command(void *data);
@@ -208,14 +209,13 @@ void        ft_free_node(t_command  *node);
 void        ft_delete_node(t_commandList **head, t_command *node);
 // create
 t_command   *ft_create_node_for_command(void);
-t_env	    *ft_create_node_for_envVar(char *var_array);
-void        *ft_create_node_by_type(void *node, t_node_type type, char *var_array);
+t_env	    *ft_create_node_for_envVar(t_command *command);
+void        *ft_create_node_by_type(void *node, t_node_type type, t_command *command);
 t_env	    *create_node(char *var_array);
 // duplicate
 t_env	    *ft_duplicate_node(char *name, char *value);
 char        **ft_env_duplicate(char **envp);
 // edit
-int	        ft_add_envVar_to_list(t_env **envlist, char *args);
 void        ft_iterate_through_list_to_apply_function(t_commandList  *head, void (*callback)(void *data));
 int         ft_compareString(void *data, void *target);
 // list
@@ -281,17 +281,23 @@ int     echo(t_command *cmd);
 int 	pwd(void);
 void    ft_display_envList(t_env *envList);
 int 	env(t_env *env_list);
-int	    ft_unset(t_env *env_list, t_command *cmd);
+int	    ft_unset(t_env **env_list, t_command *cmd);
 char	**ft_env_duplicate(char **envp);
 int     ft_error_export(char *command, char *arg, char *message, int status);
 int		ft_check_wrong_char(char *str);
 int 	ft_is_only_digit(char *str);
 int	    ft_is_sep(char c);
-int	ft_exit(t_command *command, t_env *envList);
+int	    ft_exit(t_command *command, t_env *envList);
 int     ft_search_exit_arg_in_envList(t_command *command, t_env *envList);
 int     ft_check_exit_arg_value(char *value);
 int		ft_check_argument(char *name);
+// export functions
 int     ft_export(t_env **envlist, t_command *cmd);
+void    ft_print_exported_vars(t_env *envList);
+int     ft_check_export_args(t_command *command);
+int     ft_check_variable_definition(const char *arg);
+int     ft_is_alpha(char c);
+int     ft_check_reserved_env_variables(const char *var_name);
 
 // ENV_LIST
 t_env	*ft_create_node(char *var_array);

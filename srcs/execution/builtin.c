@@ -33,16 +33,13 @@ int	ft_execute_builtin(t_command *cmd, t_env *envList)
 		printf("Dans ft_execute_bulitin je vais print la envList\n");
 		ft_display_envList(envList);
 		return 0;
-		//return (env(*envList));
 	}
 	else if (ft_strcmp(cmd->name, "pwd") == 0)
 		return (pwd());
 	else if (ft_strcmp(cmd->name, "unset") == 0)
-		return (ft_unset(envList, cmd));
+		return (ft_unset(&envList, cmd));
 	else if (ft_strcmp(cmd->name, "export") == 0)
-	{
-		ft_export(&envList, cmd);
-	}
+		return (ft_export(&envList, cmd));
 	fprintf(stderr, "Unknown builtin command: %s\n", cmd->name);
 	return (-1);
 }

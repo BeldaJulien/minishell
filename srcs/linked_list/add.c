@@ -1,5 +1,18 @@
 #include "minishell.h"
 
+int	ft_add_envVar_to_list(t_env **envlist, t_env *new_node, t_command *command)
+{
+	new_node = NULL;
+	new_node = ft_create_node_for_envVar(command);
+	if (!new_node)
+		return (0);
+	if (!ft_is_in_lst(new_node->name, envlist))
+		ft_add_to_list(envlist, new_node);
+	else
+		ft_replace_in_list(new_node, envlist);
+	return (1);
+}
+
 void ft_appendToList(t_commandList *commandList, t_command *newCommand) 
 {
     if (commandList->tail == NULL) 
