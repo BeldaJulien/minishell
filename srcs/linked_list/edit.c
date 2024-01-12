@@ -1,27 +1,5 @@
 #include "minishell.h"
 
-void ft_add_to_list(t_env **envlist, t_env *new_node) 
-{
-    t_env *current; 
-
-    if (!envlist || !new_node)
-        return;
-
-    if (!*envlist) 
-    {
-        *envlist = new_node;
-        return;
-    }
-
-    current = *envlist;
-    while (current->next != NULL) 
-    {
-        current = current->next; 
-    }
-    current->next = new_node;
-}
-
-
 void ft_replace_in_list(t_env *new_node, t_env **envlist) 
 {
     t_env *tmp = *envlist;

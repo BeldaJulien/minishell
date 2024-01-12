@@ -21,7 +21,7 @@ int	ft_is_in_list(char	*var, t_env **envlist)
 	return (tmp != NULL);
 }
 
-int ft_get_list_size(t_commandList  *head)
+int ft_get_commandList_size(t_commandList  *head)
 {
     int size = 0;
     t_command  *current = head->head;
@@ -48,7 +48,7 @@ t_env	*ft_get_in_list(char *var, t_env **envlist)
 	return (NULL);
 }
 
-int	ft_count_list(t_env **list)
+int	ft_get_envList_size(t_env **list)
 {
 	int		i;
 	t_env	*tmp;

@@ -1,5 +1,35 @@
 #include "minishell.h"
 
+t_env	*ft_create_node_for_args(char *var_array)
+{
+	t_env	*new_node;
+	int		i;
+
+	new_node = malloc(sizeof(t_env));
+	i = 0;
+	if (new_node)
+	{
+		while (var_array[i] != '=' && var_array[i] != '\0')
+			i++;
+		new_node->name = ft_substr(var_array, 0, i);
+
+		if (var_array[i] == '\0')
+		{
+			// Cas où var_array ne contient pas le caractère '='
+			new_node->value = ft_strdup("");
+		}
+		else
+		{
+			i++; // Ignorer le caractère '='
+			new_node->value = ft_strdup(var_array + i);
+		}
+
+		new_node->next = NULL;
+		return new_node;
+	}
+	return NULL;
+}
+
 t_command *ft_create_node_for_command(void)
 {
     t_command *new_node_command;
@@ -13,11 +43,11 @@ t_command *ft_create_node_for_command(void)
     new_node_command->argCount = 0;
     new_node_command->name = NULL;
     new_node_command->args = NULL;
-    //new_node_command->redirectFile = NULL;
+    new_node_command->redirectFile = NULL;
     new_node_command->next = NULL;
     new_node_command->prev = NULL;
     new_node_command->tokenType = NOT;
-    new_node_command->state = NORMAL;
+    new_node_command->quoteType = NORMAL;
     
     return new_node_command;
 }

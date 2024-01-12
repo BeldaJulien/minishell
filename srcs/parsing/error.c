@@ -1,18 +1,6 @@
 #include "minishell.h"
 
-void	free_array(char **array)
-{
-	int	i;
-
-	i = 0;
-	if (!array)
-		return ;
-	while (array[i])
-		free(array[i++]);
-	free(array);
-}
-
-void initialization_of_errors(t_mini *shell)
+void ft_initialization_of_errors(t_mini *shell)
 {
     if (shell != NULL) {
         shell->error = malloc(sizeof(t_error));

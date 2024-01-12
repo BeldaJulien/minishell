@@ -53,7 +53,7 @@ char *ft_expand_env_variables(t_command *command, int last_exit_status)
 
     int i = 0, j = 0;
     while (command->name[i] != '\0') {
-        if (command->name[i] == '$' && command->state != SINGLE_QUOTE) {
+        if (command->name[i] == '$' && command->quoteType != SINGLE_QUOTE) {
             i++;
             char *var_value;
             if (command->name[i] == '?') {

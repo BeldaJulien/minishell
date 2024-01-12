@@ -1,12 +1,21 @@
 #include "minishell.h"
 
+int ft_is_pipe_or_redir(char c)
+{
+    if (c == '>' || c == '<' || c == '|')
+        return (1);
+    return (0);
+}
+
 void ft_parse_pipes(t_command *commands, char *input) 
 {
     int i = 0;
     int cmdIndex = 0;
     int startIndex = 0;
-    while (input[i] != '\0') {
-        if (input[i] == '|') {
+    while (input[i] != '\0') 
+    {
+        if (input[i] == '|') 
+        {
             if (input[i + 1] == '|') {
                 commands[cmdIndex].tokenType = OR;
                 i += 2;

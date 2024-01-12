@@ -6,7 +6,7 @@
 /*   By: bat <bat@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 13:45:17 by bat               #+#    #+#             */
-/*   Updated: 2024/01/04 18:08:14 by bat              ###   ########.fr       */
+/*   Updated: 2024/01/12 16:06:57 by bat              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ t_env *ft_initialize_environment(char **env)
     var_array = ft_env_duplicate(env);
     while (var_array[i])
     {
-        new_node = ft_create_node(var_array[i]);
+        new_node = ft_create_node_for_args(var_array[i]);
         ft_add_to_list(&envList, new_node);
         i++;
     }

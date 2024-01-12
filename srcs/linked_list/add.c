@@ -1,28 +1,89 @@
 #include "minishell.h"
 
+void ft_add_to_list(t_env **envlist, t_env *new_node) 
+{
+    t_env *current; 
+
+    if (!envlist || !new_node)
+        return;
+
+    if (!*envlist) 
+    {
+        *envlist = new_node;
+        return;
+    }
+
+    current = *envlist;
+    while (current->next != NULL) 
+    {
+        current = current->next; 
+    }
+    current->next = new_node;
+}
+
 int	ft_add_envVar_to_list(t_env **envlist, t_env *new_node, t_command *command)
 {
 	new_node = NULL;
 	new_node = ft_create_node_for_envVar(command);
 	if (!new_node)
 		return (0);
-	if (!ft_is_in_lst(new_node->name, envlist))
+	if (!ft_is_in_list(new_node->name, envlist))
 		ft_add_to_list(envlist, new_node);
 	else
 		ft_replace_in_list(new_node, envlist);
 	return (1);
 }
 
-void ft_appendToList(t_commandList *commandList, t_command *newCommand) 
+void ft_initialize_list(t_commandList *commandList, t_command *newCommand) 
 {
+    if (commandList == NULL || newCommand == NULL) 
+    {
+        fprintf(stderr, "Error: Invalid commandList or newCommand.\n");
+        exit(EXIT_FAILURE);
+    }
+
+    if (commandList->head != NULL || commandList->tail != NULL) 
+    {
+        fprintf(stderr, "Error: Attempting to initialize a non-empty list\n");
+        exit(EXIT_FAILURE);
+    }
+
+    commandList->head = newCommand;
+    commandList->tail = commandList->head;
+    commandList->length = 1;
+}
+
+void ft_append_to_list(t_commandList *commandList, t_command *newCommand) 
+{
+    if (commandList == NULL || newCommand == NULL) 
+    {
+        fprintf(stderr, "Error: Invalid commandList or newCommand.\n");
+        exit(EXIT_FAILURE);
+    }
+
     if (commandList->tail == NULL) 
     {
         fprintf(stderr, "Error: Attempting to append to an empty list\n");
         exit(EXIT_FAILURE);
     }
 
-    commandList->tail->next = newCommand;
-    newCommand->next = NULL;
+    if (commandList->head == NULL) 
+    {
+        ft_initialize_list(commandList, newCommand);
+    } 
+    else 
+    {
+        if (commandList->tail->next != NULL) 
+        {
+            fprintf(stderr, "Error: Inconsistent list structure\n");
+            exit(EXIT_FAILURE);
+        }
+
+        commandList->tail->next = newCommand;
+        commandList->tail = commandList->tail->next;
+        commandList->tail->next = NULL;
+        commandList->length++;
+    }
 }
 
 void ft_appendToListArg(t_command *command, char *arg) 
