@@ -24,7 +24,7 @@
 # define STDOUT 1
 # define STDERR 2
 # define CD "cd"
-//# define ECHO "echo"
+# define ECHO "echo"
 # define ENV "env"
 # define EXIT "exit"
 # define EXPORT "export"
@@ -57,21 +57,15 @@ typedef enum e_quote
     DOUBLE_QUOTE,
     ESCAPED        // backslash
 } t_quote_type;
-
 typedef enum Bool
 {
 	FALSE,
 	TRUE
 } t_Bool;
-
 typedef enum node_type {
     ENV_NODE,
     COMMAND_NODE
 } t_node_type;
-
-
-// Structure générique pour une liste
-
 typedef struct s_command
 {
     char *name;
@@ -128,8 +122,6 @@ typedef struct s_redir
     struct s_redir *prev;
 } t_redir;
 
-//typedef t_list t_redirList;
-
 typedef struct s_execute
 {
     int *fd;
@@ -139,9 +131,6 @@ typedef struct s_execute
     int active;
     struct s_execute *next;
 } t_execute;
-
-
-//typedef t_list t_pipesList;
 
 typedef struct s_global
 {
