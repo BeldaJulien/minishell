@@ -1,18 +1,6 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   parser.c                                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: bat <bat@student.42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/12 13:44:27 by bat               #+#    #+#             */
-/*   Updated: 2024/01/12 17:23:09 by bat              ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "minishell.h"
 
-void ft_init_new_node(t_commandList *commandList, t_command *command, char *token, int tokenIndex)
+void ft_init_new_node(t_commandList *commandList, t_command *command, char *token)
 {
     command->name = ft_strdup(token);
     command->data = NULL;
@@ -25,18 +13,17 @@ void ft_init_new_node(t_commandList *commandList, t_command *command, char *toke
     }
     command->args[0] = ft_strdup(token);
     command->args[1] = NULL;
-    command->argCount = 0;
+    command->argCount = 1;
     command->redirectFile = NULL;
     command->fd[0] = -1;
     command->fd[1] = -1;
     command->next = NULL;
     command->prev = NULL;
-    command->tokenType = ft_check_and_allocate_token_type(token, tokenIndex);
+    command->tokenType = ft_allocate_token_type(token);
     command->quoteType = ft_check_and_allocate_quote_type(token);
-   
 }
 
-void ft_createNode_initNode_appendNodeToList(t_commandList *commandList, char *token, int tokenIndex) 
+void ft_createNode_initNode_appendNodeToList(t_commandList *commandList, char *token) 
 {
     t_command *command;
     
@@ -47,7 +34,19 @@ void ft_createNode_initNode_appendNodeToList(t_commandList *commandList, char *t
         ft_destroy_command(commandList);
         exit(EXIT_FAILURE);
     }
-    ft_init_new_node(commandList, command, token, tokenIndex);
+    ft_init_new_node(commandList, command, token);
+    printf("My new cute node contains command->name: %s\n", command->name);
+    printf("My new cute node contains command->data: %p\n", command->data);
+    printf("My new cute node contains command->args[0]: %s\n", command->args[0]);
+    printf("My new cute node contains command->args[1]: %s\n", command->args[1]);
+    printf("My new cute node contains command->argcount: %d\n", command->argCount);
+    printf("My new cute node contains command->redirectfile: %s\n", command->redirectFile);
+    printf("My new cute node contains command->fd[0]: %d\n", command->fd[0]);
+    printf("My new cute node contains command->fd[1]: %d\n", command->fd[1]);
+    printf("My new cute node contains command->next: %p\n", (void *)command->next);
+    printf("My new cute node contains command->prev: %p\n", (void *)command->prev);
+    printf("My new cute node contains command->tokenType: %d\n", (int)command->tokenType);
+    printf("My new cute node contains command->quoteType: %d\n", (int)command->quoteType);
     ft_append_to_list(commandList, command);
 }
 
@@ -92,7 +91,7 @@ int ft_split_arg(t_commandList *commandList, char *input)
         fprintf(stderr, "An error has occurred during input tokenization: Empty command\n");
         return 0;
     }
-    ft_createNode_initNode_appendNodeToList(commandList, token, 0);
+    ft_createNode_initNode_appendNodeToList(commandList, token);
     argIndex++;
     while ((token = ft_strtok(NULL, " ")) != NULL) 
     {

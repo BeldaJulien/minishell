@@ -24,7 +24,7 @@
 # define STDOUT 1
 # define STDERR 2
 # define CD "cd"
-# define ECHO "echo"
+// # define ECHO "echo"
 # define ENV "env"
 # define EXIT "exit"
 # define EXPORT "export"
@@ -274,8 +274,8 @@ char            *ft_getenv_var_value(const char *name);
 int             ft_calculate_new_length(const char *cmd, int last_exit_status);
 char            *ft_expand_env_variables(t_command *command, int last_exit_status);
 // parser
-void            ft_init_new_node(t_commandList *commandList, t_command *command, char *token, int tokenIndex);
-void            ft_createNode_initNode_appendNodeToList(t_commandList *commandList, char *token, int tokenIndex);
+void            ft_init_new_node(t_commandList *commandList, t_command *command, char *token);
+void            ft_createNode_initNode_appendNodeToList(t_commandList *commandList, char *token);
 void            ft_process_argument(t_commandList *commandList, t_command *command, char *token, int argIndex);
 void            ft_process_cd_argument(t_command *command, char *arg);
 int             ft_split_arg(t_commandList *commandList, char *input);
@@ -289,18 +289,39 @@ int			    ft_check_quotes_error(void);
 void            ft_follow_quotes_state(t_command *cmd);
 char            *ft_extract_quoted_argument(char *input);
 void		    ft_tokenize_with_quotes(char *input);
+// quote_type
+void            ft_check_char_for_quote_type(char current_char, t_quote_type *quote_type); 
+t_quote_type    ft_check_and_allocate_quote_type(char *token); 
+
 // char         *ft_strtrim_with_quotes(char *str); where are you ?
 // char         *ft_strtok_quoted(char *str, const char *delim); where are you ? 
 // redirection
 void            ft_redirect_stdout(t_command *command, char *input);
 void            ft_redirect_stdin(t_command *command, char *input);
+// token_type_check1
+int             ft_check_pipe(char *token);
+int             ft_check_heredoc(char *token); 
+int             ft_check_lpr(char *token);
+int             ft_check_rpr(char *token); 
+int             ft_check_and(char *token);
+// token_type_check2
+int             ft_check_or(char *token);
+int             ft_check_append(char *token); 
+int             ft_check_out(char *token);
+int             ft_check_in(char *token);
+int             ft_check_not(char *token);
+// token_type_check3
+int             ft_check_end(char *token);
+int             ft_check_command(char *token); 
+int             ft_check_argument(char *token); 
+int             ft_check_option(char *token); 
+int             ft_check_unknown_type(char *token); 
+
+// token_type
+t_token_type    ft_allocate_token_type(char *token);
 // tool_parse
 int	            ft_is_white_space(char c);
 t_Bool          ft_check_only_spaces(const char *str);
-// type
-t_token_type    ft_check_and_allocate_token_type(char *token, int tokenIndex);
-void            ft_check_char_for_quote_type(char current_char, t_quote_type *quote_type);
-t_quote_type    ft_check_and_allocate_quote_type(char *token);
 // util
 char            *ft_strcpy(char *dest, const char *src);
 char            *ft_strpbrk(const char *s1, const char *s2);

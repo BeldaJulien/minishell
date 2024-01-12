@@ -80,7 +80,7 @@ void ft_follow_quotes_state(t_command *cmd) {
 }*/
 
 // Fonction pour extraire un argument entre guillemets
-char *extract_quoted_argument(char *input) 
+char *ft_extract_quoted_argument(char *input) 
 {
     char *start = strchr(input, '"');
     char *end = strchr(start + 1, '"');

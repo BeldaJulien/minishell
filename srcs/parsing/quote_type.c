@@ -1,17 +1,5 @@
 #include "minishell.h"
 
-t_token_type ft_check_and_allocate_token_type(char *token, int tokenIndex) 
-{
-    if (tokenIndex == 0 && token[0] != '-') 
-    {
-        return COMMAND_TYPE;
-    }
-    else 
-    {
-        return ARGUMENT_TYPE;
-    }
-}
-
 void ft_check_char_for_quote_type(char current_char, t_quote_type *quote_type) 
 {
     if (*quote_type == NORMAL) 
