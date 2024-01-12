@@ -45,8 +45,8 @@ void ft_createNode_initNode_appendNodeToList(t_commandList *commandList, char *t
     printf("My new cute node contains command->fd[1]: %d\n", command->fd[1]);
     printf("My new cute node contains command->next: %p\n", (void *)command->next);
     printf("My new cute node contains command->prev: %p\n", (void *)command->prev);
-    printf("My new cute node contains command->tokenType: %d\n", (int)command->tokenType);
-    printf("My new cute node contains command->quoteType: %d\n", (int)command->quoteType);
+    printf("My new cute node contains command->tokenType: %d\n", command->tokenType);
+    printf("My new cute node contains command->quoteType: %d\n", command->quoteType);
     ft_append_to_list(commandList, command);
 }
 

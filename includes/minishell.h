@@ -266,6 +266,12 @@ void        ft_init_signals(void(*signals_handle)(int));
 void        ft_init_terminal_settings(void);
 
 // PARSING
+// custom_strtok
+void        ft_print_word(const char *start, const char *end);
+const char  *ft_find_next_delimiter(const char *start, char delimiter);
+const char  *ft_find_closing_quote(const char *start);
+void        ft_process_word(const char *start, const char *end);
+void        ft_strtok_for_quotes(const char *input);
 // error
 void            ft_initialization_of_errors(t_mini *shell);
 // expansion
