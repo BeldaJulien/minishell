@@ -35,3 +35,48 @@ t_token_type ft_allocate_token_type(char *token)
     }
 }
 
+void custom_strtok(const char *input) {
+    const char *start = input;
+    const char *end;
+
+    while (*start) {
+        // Trouver le début d'un mot
+        while (*start && (*start == ' ' || *start == '\t')) {
+            putchar(*start);
+            start++;
+        }
+
+        // Vérifier si le mot est entre guillemets
+        if (*start == '"') {
+            putchar(*start);  // Imprimer le guillemet ouvrant
+            start++;
+
+            // Trouver la fin du mot (jusqu'à la prochaine occurrence du guillemet fermant)
+            end = strchr(start, '"');
+
+            if (end == NULL) {
+                end = start + strlen(start);
+            }
+
+            // Imprimer le mot
+            print_word(start, end);
+
+            if (*start == '"') {
+                putchar(*start);  // Imprimer le guillemet fermant
+                start++;
+            }
+        } else {
+            // Trouver la fin du mot
+            end = strchr(start, ' ');
+
+            if (end == NULL) {
+                end = start + strlen(start);
+            }
+
+            // Imprimer le mot
+            print_word(start, end);
+        }
+
+        putchar('\n');
+    }
+}

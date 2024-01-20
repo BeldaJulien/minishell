@@ -30,7 +30,8 @@ const char *ft_find_closing_quote(const char *start)
 
 void ft_process_word(const char *start, const char *end) 
 {
-    if (*start == '"') {
+    if (*start == '"') 
+    {
         const char *closing_quote = ft_find_closing_quote(start);
         ft_print_word(start, closing_quote);
 
