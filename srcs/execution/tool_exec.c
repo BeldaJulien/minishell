@@ -53,8 +53,6 @@ t_env *create_node2(char *var, char *value)
     return NULL;
 }
 
-
-
 char *ft_strjoin_free(char const *s1, char const *s2, int free_s1)
 {
     if (s1 == NULL || s2 == NULL)

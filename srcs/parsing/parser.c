@@ -135,10 +135,10 @@ int ft_launch_parsing_and_execution(t_commandList *commandList, char *input, t_e
         
         if (ft_count_piped_commands(command) > 1)
         {
-            ft_execute_piped_commands(command, ft_count_piped_commands(command));
+            ft_execute_piped_commands(commandList, command, ft_count_piped_commands(command), envList, envp);
         }
         
-        else if (ft_execute_single_command(command, envList, envp) != 0) 
+        else if (ft_execute_single_command(command, commandList, envList, envp) != 0) 
         {
             perror("Error executing command\n");
             ft_destroy_command(commandList);

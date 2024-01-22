@@ -44,9 +44,4 @@ void	ft_destroy_current_shell(t_mini *mini)
 		free(mini->error);
 		mini->error = NULL;
 	}
-	if (mini->exec != NULL)
-	{
-		free(mini->exec);
-		mini->exec = NULL;
-	}
 }

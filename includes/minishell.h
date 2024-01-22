@@ -50,6 +50,8 @@ typedef enum e_token_type
     UNKNOWN_TYPE  
 } t_token_type;
 
+typedef t_token_type (*TokenChecker)(char *);
+
 typedef enum e_quote 
 {
     NORMAL,        // no quote
@@ -129,17 +131,6 @@ typedef struct s_execute
     struct s_execute *next;
 } t_execute;
 
-typedef struct s_global
-{
-    t_commandList *arguments;
-    t_commandList *commands;
-    t_command *cmd;
-    t_env *envlist;
-    t_redir *redirections;
-    t_error *error;
-    t_execute *execute;
-} t_global;
-
 typedef struct s_mini
 {
     char *av;
@@ -149,10 +140,7 @@ typedef struct s_mini
     int stdin_fd;
     int stdout_fd;
     t_commandList *commands;
-    t_global *global_data;
     t_error *error;
-    // t_global *child; // TO DO : comment rappeler t_global etant plus bas ?
-    // t_global *exec;  // est-ce quil faut plutot rappeler la structure NON t_global ?
 } t_mini;
 
 // BUILT-IN
@@ -192,30 +180,32 @@ int	            ft_execute_builtin(t_command *cmd, t_env *envList);
 // child
 pid_t           ft_create_child_process();
 void            ft_launch_child_processes(t_command *commands, int num_commands, int pipes[][2], pid_t child_pids[], t_env *envList, char **envp); // TO DO too much args
-void            ft_wait_for_child_processes_to_end(int num_commands, char *full_path, char **args, char **envp);
+void            ft_execute_child_process(char *full_path, char **args, char **envp);
+void            ft_wait_for_child_processes_to_end(pid_t *child_pids, int num_commands, char *full_path, char **args, char **envp);
 void            ft_wait_for_child_process(pid_t pid);
 void            ft_configure_child_process(t_command *commands, int num_commands, int index, int pipes[][2], t_env *envList, char **envp); // TO DO too much args
 // command
-int             ft_execute_single_command(t_command *command, t_env *envList, char **envp);
-void            ft_execute_external_command(t_command *command, t_commandList *commandList, char **envp);
+int             ft_execute_single_command(t_command *command, t_commandList *commandList, t_env *envList, char **envp); 
+void            ft_execute_external_command(t_command *command, t_commandList *commandList, char **envp); 
 // commandList
 void            ft_initialize_commandList(t_commandList *commandList);
-void            ft_execute_command_list(t_commandList *commandList, t_global *global_data, char **envp); // TO DO t_global wtf 
+void            ft_execute_command_list(t_commandList *commandList, t_env *envList, char **envp); // TO DO t_global wtf 
 // destroy
 void            ft_destroy_command(t_commandList *commandList);
 void	        ft_destroy_current_shell(t_mini *mini);
+void            ft_destroy_commandList(t_commandList *commandList);
 // history
 void            ft_manage_history(t_mini *shell, const char *input);
 void            ft_custom_prompt_msg(t_mini *shell);
 // path
-char            *ft_build_full_path(char *command_name, t_commandList *commandList); 
+char            *ft_build_full_path(t_commandList *commandList); 
 void            ft_execute_command_with_relative_path(t_command *command);
 void            ft_execute_command_with_path(t_command *command);
 void            ft_execute_command_with_absolute_path(t_command *command);
 char            *ft_lookfor_command_and_build_path(char *path, t_commandList *commandList);
 // pipe
 void            ft_execute_command_with_pipe(t_command *command, t_env *envList, char **envp);
-void            ft_execute_piped_commands(t_command *commands, int num_commands, t_env *envList, char **envp);
+void            ft_execute_piped_commands(t_commandList *commandList, t_command *commands, int num_commands, t_env *envList, char **envp);
 // redirection
 // shell
 void            ft_exit_shell(t_mini *shell);
@@ -301,7 +291,7 @@ void            ft_init_new_node(t_commandList *commandList, t_command *command,
 void            ft_createNode_initNode_appendNodeToList(t_commandList *commandList, char *token);
 void            ft_process_argument(t_commandList *commandList, t_command *command, char *token, int argIndex);
 int             ft_split_input_in_token_to_commandList(t_commandList *commandList, char *input);
-int             ft_launch_parsing(t_commandList *commandList, char *input ,t_env *envList, char **envp);
+int             ft_launch_parsing_and_execution(t_commandList *commandList, char *input, t_env *envList, char **envp);
 // pipe
 void            ft_create_pipes(int pipes[2]);
 void            ft_create_pipes_array(int pipes[][2], int num_pipes);
@@ -353,6 +343,7 @@ extern int	    g_exit_code;
 void            rl_replace_line(const char *str, int i);
 
 // MAIN
+char            *ft_capture_input(void);
 int             main(int ac, char **av, char **envp);
 void            ft_write_inputrc(void);
 void	        ft_exit_shell(t_mini *shell);

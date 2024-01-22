@@ -1,4 +1,4 @@
-/* #include "minishell.h"
+#include "minishell.h"
 
 char *ft_strcpy(char *dest, const char *src)
 {
@@ -72,4 +72,3 @@ char *ft_strndup(const char *s, size_t n)
     new_str[len] = '\0';
     return new_str;
 }
-*/

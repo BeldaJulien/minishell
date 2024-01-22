@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-int ft_execute_single_command(t_command *command, t_env *envList, char **envp) 
+int ft_execute_single_command(t_command *command, t_commandList *commandList, t_env *envList, char **envp) 
 {
     if (command->tokenType == COMMAND_TYPE) 
     {
@@ -17,7 +17,7 @@ int ft_execute_single_command(t_command *command, t_env *envList, char **envp)
         else 
         {
             printf("External command detected. Command: %s\n", command->name);
-            ft_execute_external_command(command, envList, envp);
+            ft_execute_external_command(command, commandList, envp);
         }
     }
     else 
@@ -32,7 +32,7 @@ void ft_execute_external_command(t_command *command, t_commandList *commandList,
     char *full_path;
     pid_t pid;
     
-    full_path = ft_build_full_path(command->name, commandList);
+    full_path = ft_build_full_path(/*command->name, */commandList);
 
     if (full_path != NULL) 
     {

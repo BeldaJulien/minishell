@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-char *ft_build_full_path(char *command_name, t_commandList *commandList) 
+char *ft_build_full_path(t_commandList *commandList) 
 {
     char *path;
     
@@ -19,19 +19,24 @@ void ft_execute_command_with_absolute_path(t_command *command)
 
 void ft_execute_command_with_relative_path(t_command *command) 
 {
-    char *current_path = getcwd(NULL, 0);
+    char *current_path;
+    char *full_path;
+    char *path_ptr;
+    char *command_name;
+    
+    current_path = getcwd(NULL, 0);
     if (current_path == NULL) {
         perror("Error executing relative path");
         exit(EXIT_FAILURE);
     }
 
-    char *full_path = malloc(strlen(current_path) + strlen(command->name) + 2);
+    full_path = malloc(strlen(current_path) + strlen(command->name) + 2);
     if (full_path == NULL) {
         perror("Erreur d'allocation de mémoire");
         exit(EXIT_FAILURE);
     }
 
-    char *path_ptr = full_path;
+    path_ptr = full_path;
     while (*current_path != '\0') {
         *path_ptr = *current_path;
         path_ptr++;
@@ -40,7 +45,7 @@ void ft_execute_command_with_relative_path(t_command *command)
     *path_ptr = '/';
     path_ptr++;
 
-    char *command_name = command->name;
+    command_name = command->name;
     while (*command_name != '\0') 
     {
         *path_ptr = *command_name;
@@ -79,7 +84,8 @@ void ft_execute_command_with_path(t_command *command)
     } 
 }
 
-char *ft_lookfor_command_and_build_path(char *path, t_commandList *commandList) {
+char *ft_lookfor_command_and_build_path(char *path, t_commandList *commandList) 
+{
     char *token;
     char fullPath[MAX_PATH_LENGTH];
 

@@ -1,7 +1,5 @@
 #include "minishell.h"
 
-typedef t_token_type (*TokenChecker)(char *);
-
 t_token_type ft_checkType(TokenChecker checker, char *token) 
 {
     return checker(token);

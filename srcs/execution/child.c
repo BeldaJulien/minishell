@@ -33,11 +33,18 @@ void ft_launch_child_processes(t_command *commands, int num_commands, int pipes[
     }
 }
 
-void ft_wait_for_child_processes_to_end(int num_commands, char *full_path, char **args, char **envp) 
+void ft_execute_child_process(char *full_path, char **args, char **envp)
+ {
+    if (execve(full_path, args, envp) == -1) 
+    {
+        perror("Erreur lors de l'exécution de la commande");
+        exit(EXIT_FAILURE);
+    }
+}
+
+void ft_wait_for_child_processes_to_end(pid_t *child_pids, int num_commands, char *full_path, char **args, char **envp) 
 {
     int i;
-    pid_t child_pids[num_commands];
-
 
     i = 0;
     while (i < num_commands)
@@ -100,11 +107,3 @@ void ft_configure_child_process(t_command *commands, int num_commands, int index
     ft_execute_command_with_pipe(&commands[index], envList, envp);
 }
 
-void ft_execute_child_process(char *full_path, char **args, char **envp)
- {
-    if (execve(full_path, args, envp) == -1) 
-    {
-        perror("Erreur lors de l'exécution de la commande");
-        exit(EXIT_FAILURE);
-    }
-}

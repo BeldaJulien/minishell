@@ -9,8 +9,6 @@ void ft_exit_shell(t_mini *shell)
         // Mettez à jour en conséquence si vous utilisez t_command au lieu de t_commandList
         if (shell->commands != NULL)
             ft_destroy_commandList(shell->commands);
-        if (shell->global_data != NULL)
-            free(shell->global_data);
         free(shell);
     }
 }
@@ -38,29 +36,32 @@ t_env *ft_initialize_environment(char **env)
 
 t_mini *ft_initialize_minishell(int ac, char **av, char **envp)
 {
-    t_mini *miniShell;
+    t_mini *shell;
     
-    miniShell = (t_mini *)malloc(sizeof(t_mini));
-    if (miniShell == NULL) 
+    (void)ac;
+    (void)av;
+    (void)envp;
+    shell = (t_mini *)malloc(sizeof(t_mini));
+    if (shell == NULL) 
     {
         perror("Error initializing mini shell");
         exit(EXIT_FAILURE);
     }
 
     // Initialisation des membres de la structure mini_shell
-    miniShell->fd_history = 0;
-    miniShell->stdin_fd = dup(STDIN_FILENO);
-    miniShell->stdout_fd = dup(STDOUT_FILENO);
+    shell->av = NULL;
+    shell->fd_history = 0;
+    shell->stdin_fd = dup(STDIN_FILENO);
+    shell->stdout_fd = dup(STDOUT_FILENO);
 
-    miniShell->commands = (t_commandList *)malloc(sizeof(t_commandList));
-    ft_initialize_commandList(miniShell->commands);
+    shell->commands = (t_commandList *)malloc(sizeof(t_commandList));
+    ft_initialize_commandList(shell->commands);
 
-    miniShell->global_data = (t_global *)malloc(sizeof(t_global));
     // Initialiser d'autres membres de global_data si nécessaire
 
-    miniShell->error = NULL; // Initialisez à NULL ou faites une initialisation appropriée
+    shell->error = NULL; // Initialisez à NULL ou faites une initialisation appropriée
 
-    return miniShell;
+    return shell;
 }
 
 void ft_execute_minishell(t_mini *shell, t_env *envList, char **envp)
@@ -70,22 +71,31 @@ void ft_execute_minishell(t_mini *shell, t_env *envList, char **envp)
 
     ft_write_inputrc();
 
-    while (ft_custom_prompt_msg(shell) && (shell->av != NULL))
+    while (1)
     {
-        input = ft_capture_input(shell);
+        // TO DO add signals here
+        ft_custom_prompt_msg(shell);
 
-        ft_manage_history(&shell, shell->av);
-
-        if (ft_check_only_spaces(shell->av) == TRUE)
+        if (shell->av == NULL) 
         {
-            ft_destroy_current_shell(&shell);
+            printf("Stop shell\n");
+            break;
+        }
+
+        input = ft_capture_input();
+
+        ft_manage_history(shell, input);
+
+        if (ft_check_if_only_spaces(input) == TRUE)
+        {
+            ft_destroy_current_shell(shell);
             free(input);
             continue;
         }
-        else if (ft_strcmp(shell->av, "") != 0)
+        else if (ft_strcmp(input, "") != 0)
         {
             ft_launch_parsing_and_execution(&commandList, input, envList, envp);
-            ft_destroy_current_shell(&shell);
+            ft_destroy_current_shell(shell);
         }
 
         free(input);
