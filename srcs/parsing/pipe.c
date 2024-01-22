@@ -1,45 +1,52 @@
 #include "minishell.h"
 
-int ft_is_pipe_or_redir(char c)
+void ft_create_pipes(int pipes[2])
 {
-    if (c == '>' || c == '<' || c == '|')
-        return (1);
-    return (0);
+    if (pipe(pipes) == -1) 
+    {
+        perror("Error creating pipe");
+        exit(EXIT_FAILURE);
+    }
 }
 
-void ft_parse_pipes(t_command *commands, char *input) 
+void ft_create_pipes_array(int pipes[][2], int num_pipes) 
 {
-    int i = 0;
-    int cmdIndex = 0;
-    int startIndex = 0;
-    while (input[i] != '\0') 
+    int i;
+    
+    i = 0;
+    while (i < num_pipes)
     {
-        if (input[i] == '|') 
-        {
-            if (input[i + 1] == '|') {
-                commands[cmdIndex].tokenType = OR;
-                i += 2;
-            } else {
-                commands[cmdIndex].tokenType = PIPE;
-                i += 1;
-            }
-
-            int nameLength = i - startIndex - 1; // -1 pour ne pas inclure le pipe dans le nom
-            commands[cmdIndex].name = (char *)malloc(nameLength + 1);
-            if (commands[cmdIndex].name == NULL)
-                return;
-            ft_strlcpy(commands[cmdIndex].name, input + startIndex, nameLength + 1);
-            cmdIndex++;
-            startIndex = i;
-        }
+        ft_create_pipes(pipes[i]);
         i++;
     }
-    // Capture last command after the last pipe or if there are no pipes
-    if (startIndex < i) {
-        int nameLength = i - startIndex;
-        commands[cmdIndex].name = (char *)malloc(nameLength + 1);
-        if (commands[cmdIndex].name == NULL)
-            return;
-        ft_strlcpy(commands[cmdIndex].name, input + startIndex, nameLength + 1);
+}
+
+void ft_close_pipes(int pipes[][2], int num_pipes) 
+{
+    int i;
+    
+    i = 0;
+    while (i < num_pipes) 
+    {
+        close(pipes[i][0]);
+        close(pipes[i][1]);
+        i++;
     }
+}
+
+int ft_count_piped_commands(t_command *start_command) 
+{
+    int num_commands;
+    t_command *current_command;
+    
+    num_commands = 1;
+    current_command = start_command;
+
+    while (current_command->next != NULL && current_command->next->tokenType == PIPE) 
+    {
+        num_commands++;
+        current_command = current_command->next;
+    }
+
+    return num_commands;
 }

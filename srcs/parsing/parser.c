@@ -28,7 +28,7 @@ void ft_createNode_initNode_appendNodeToList(t_commandList *commandList, char *t
     t_command *command;
     
     command = ft_create_node_for_command();
-    if (!(ft_create_node_for_command())) 
+    if (command == NULL) 
     {
         perror("CHAOS, error allocating memory");
         ft_destroy_command(commandList);
@@ -53,11 +53,10 @@ void ft_createNode_initNode_appendNodeToList(t_commandList *commandList, char *t
 void ft_process_argument(t_commandList *commandList, t_command *command, char *token, int argIndex) 
 {
     char **newArgs;
-    int i;
 
     if (command == NULL || token == NULL) 
     {
-        fprintf(stderr, "An error occurred: not enough arguments\n");
+        perror("An error occurred in ft_process_argument: wrong input to process\n");
         return;
     }
     newArgs = (char **)malloc(sizeof(char *) * (argIndex + 2));
@@ -67,19 +66,14 @@ void ft_process_argument(t_commandList *commandList, t_command *command, char *t
         ft_destroy_command(commandList);
         exit(EXIT_FAILURE);
     }
-    i = 0;
-    while (i < argIndex) 
-    {
-        newArgs[i] = command->args[i];
-        i++;
-    }
-    newArgs[argIndex] = ft_strdup(token);
-    newArgs[argIndex + 1] = NULL;
+        
     command->args = newArgs;
+    command->args[argIndex] = ft_strdup(token);
+    command->args[argIndex + 1] = NULL;
     command->argCount++;
 }
 
-int ft_split_arg(t_commandList *commandList, char *input) 
+int ft_split_input_in_token_to_commandList(t_commandList *commandList, char *input) 
 {
     char *token;
     int argIndex;
@@ -88,74 +82,74 @@ int ft_split_arg(t_commandList *commandList, char *input)
     token = ft_strtok(input, " ");
     if (token == NULL) 
     {
-        fprintf(stderr, "An error has occurred during input tokenization: Empty command\n");
-        return 0;
+        perror("An error has occurred during input tokenization: Empty command\n");
+        return 1;
     }
     ft_createNode_initNode_appendNodeToList(commandList, token);
     argIndex++;
     while ((token = ft_strtok(NULL, " ")) != NULL) 
     {
-        if (argIndex == 1 && ft_strcmp(commandList->tail->name, "cd") == 0) 
+        if (ft_strcmp(token, "cd") == 0) 
         {
             ft_process_cd_argument(commandList->tail, token);
             break;
         }
-        printf("Processing argument %d: %s\n", argIndex, token);
         ft_process_argument(commandList, commandList->tail, token, argIndex);
         argIndex++;
     }
-    ft_process_argument(commandList, commandList->tail, NULL, argIndex);
     return commandList->length;
 }
 
-void ft_process_cd_argument(t_command *command, char *arg) 
+int ft_parse_and_add_to_commandList(t_commandList *commandList, char *input) 
 {
-    // Assurez-vous que la structure t_command est correctement initialisée avec les arguments
-    command->args = malloc(2 * sizeof(char *));
-    command->args[0] = ft_strdup(arg);
-    command->args[1] = NULL;
-}
-
-int ft_launch_parsing(t_commandList *commandList, char *input, t_env *envList, char **envp)
-{
-    t_command *command;
-    ft_initialize_commandList(commandList);
-
-    if (ft_split_arg(commandList, input) > 0) 
+    if (commandList->head == NULL)
     {
-        
-        if (commandList != NULL && commandList->head != NULL) 
-        {
-            ft_print_list(commandList, ft_print_command);
-
-            command = commandList->head;
-
-            if (ft_is_builtin(command)) 
-            {
-                printf("Built-in found. Launch execute builtin of command : %s\n", command->name);
-                ft_execute_builtin(command, envList);
-            } 
-            else if (command->name[0] == '.' || command->name[0] == '/') 
-            {
-                printf("Relative or absolute path detected. Command: %s\n", command->name);
-                ft_execute_command_with_path(command);
-            }
-            else 
-            {
-                printf("External command detected. Command: %s\n", command->name);
-                ft_execute_external_command(command, commandList, envp);
-            }
-        } 
-        else 
-        {
-            fprintf(stderr, "Error: commandList or its head is NULL\n");
-        }
+        perror("commandList head is NULL in ft_parse_and_add_to_commandList");
         return 1;
+    }
+    if (ft_split_input_in_token_to_commandList(commandList, input) > 0) 
+    {
+        return 0;
     } 
     else 
     {
         perror("Parsing failed");
         ft_destroy_command(commandList);
+        return 1;
+    }
+}
+
+
+int ft_launch_parsing_and_execution(t_commandList *commandList, char *input, t_env *envList, char **envp) 
+{
+    t_command *command;
+
+    ft_initialize_commandList(commandList);
+
+    if (ft_parse_and_add_to_commandList(commandList, input) == 0 && commandList->head != NULL) 
+    {
+        // ft_print_commandList(commandList);
+
+        command = commandList->head;
+
+        
+        if (ft_count_piped_commands(command) > 1)
+        {
+            ft_execute_piped_commands(command, ft_count_piped_commands(command));
+        }
+        
+        else if (ft_execute_single_command(command, envList, envp) != 0) 
+        {
+            perror("Error executing command\n");
+            ft_destroy_command(commandList);
+            return 1;
+        }
+        
         return 0;
+    } 
+    else 
+    {
+        perror("ft_parse_and_add_to_commandList failed. commandList problem.\n");
+        return 1;
     }
 }

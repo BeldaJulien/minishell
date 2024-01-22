@@ -4,12 +4,20 @@ void ft_destroy_command(t_commandList *commandList)
 {
 	t_command	*current;
 	t_command	*next;
+	int i;
 
 	current = commandList->head;
 	while (current != NULL)
 	{
 		next = current->next;
 		free(current->name);
+		i = 0;
+		while (i < current->argCount)
+		{
+        	free(current->args[i]);
+			i++;
+        }
+        free(current->args);
 		free(current);
 		current = next;
 	}

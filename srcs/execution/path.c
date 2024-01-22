@@ -1,5 +1,13 @@
 #include "minishell.h"
 
+char *ft_build_full_path(char *command_name, t_commandList *commandList) 
+{
+    char *path;
+    
+    path = getenv("PATH");
+    return ft_lookfor_command_and_build_path(path, commandList);
+}
+
 void ft_execute_command_with_absolute_path(t_command *command)
 {
     if (execve(command->name, command->args, NULL) == -1)
@@ -59,7 +67,8 @@ void ft_execute_command_with_relative_path(t_command *command)
 }
 
 
-void ft_execute_command_with_path(t_command *command) {
+void ft_execute_command_with_path(t_command *command) 
+{
 
     if (command->name[0] == '/') 
     {

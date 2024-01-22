@@ -1,6 +1,7 @@
 #include "minishell.h"
 
-void ft_manage_history(t_mini *shell, const char *input) {
+void ft_manage_history(t_mini *shell, const char *input) 
+{
     // Vérifier si le fichier d'historique est déjà ouvert
     if (shell->fd_history == -1) 
     {
@@ -14,15 +15,15 @@ void ft_manage_history(t_mini *shell, const char *input) {
     if (input != NULL) 
     {
         // Assurer que la chaîne input est terminée par '\0'
-        size_t input_len = strlen(input);
-        char *input_copy = malloc(input_len + 1); // +1 pour le caractère nul
+        size_t input_len = ft_strlen(input);
+
+        // Dupliquer la chaîne input pour éviter des modifications imprévues
+        char *input_copy = ft_strdup(input);
         if (input_copy == NULL) 
         {
             perror("Erreur d'allocation de mémoire");
             return;
         }
-
-        strcpy(input_copy, input);
 
         // Ajouter la commande à l'historique
         add_history(input_copy);
@@ -36,7 +37,8 @@ void ft_manage_history(t_mini *shell, const char *input) {
     }
 }
 
-void ft_custom_prompt_msg(t_mini *shell) {
+void ft_custom_prompt_msg(t_mini *shell) 
+{
     if (shell->av != NULL) {
         free(shell->av);
         shell->av = NULL; // Assurez-vous de mettre à NULL après la libération
@@ -50,35 +52,3 @@ void ft_custom_prompt_msg(t_mini *shell) {
         free(input); // Libérez la mémoire allouée par readline après la copie
     }
 }
-
-/*
-permettrait à l'utilisateur de modifier la commande en cours d'édition avant de l'exécuter
-int main() {
-    char *line;
-
-    // Initialisation de Readline
-    rl_initialize();
-
-    // Lire une ligne
-    line = readline("Entrez une ligne: ");
-
-    if (line) {
-        // Ajouter la ligne à l'historique
-        add_history(line);
-
-        // Remplacer la ligne avec "Nouvelle Ligne"
-        ft_rl_replace_line("Nouvelle Ligne", 0);
-
-        // Afficher la ligne modifiée
-        rl_redisplay();
-
-        // Libérer la mémoire allouée pour la ligne
-        free(line);
-    }
-
-    // Libérer les ressources de Readline
-    rl_cleanup_after_signal();
-    
-    return 0;
-}
-*/

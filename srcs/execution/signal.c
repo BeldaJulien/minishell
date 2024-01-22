@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   signals.c                                          :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: bat <bat@student.42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/28 01:03:24 by bat               #+#    #+#             */
-/*   Updated: 2023/12/11 16:12:30 by bat              ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "minishell.h"
 
 
@@ -48,7 +36,7 @@ void ft_handle_signal_execution(int signal_num)
     }
 }
 
-void init_signals(void(*signals_handle)(int))
+void ft_init_signals(void(*signals_handle)(int))
 {
     struct sigaction	sig;
     

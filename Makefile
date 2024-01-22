@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: julienbelda <julienbelda@student.42.fr>    +#+  +:+       +#+         #
+#    By: bat <bat@student.42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/07 17:02:03 by bat               #+#    #+#              #
-#    Updated: 2023/12/15 12:51:06 by julienbelda      ###   ########.fr        #
+#    Updated: 2024/01/22 00:19:58 by bat              ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -103,7 +103,7 @@ LIBFT_FOLDER := $(SRCS_DIRECTORY)/libft
 # ALL FILES.C
 MAIN_FILE := main.c
 
-MINISHELL_FILES := $(wildcard $(SRCS_DIRECTORY)/minishell/*.c)
+# MINISHELL_FILES := $(wildcard $(SRCS_DIRECTORY)/minishell/*.c)
 PARSING_FILES := $(wildcard $(SRCS_DIRECTORY)/parsing/*.c)
 EXECUTING_FILES := $(wildcard $(SRCS_DIRECTORY)/execution/*.c)
 BUILTIN_FILES := $(wildcard $(SRCS_DIRECTORY)/builtin/*.c)

@@ -2,6 +2,33 @@
 
 int g_exit_code = 0;
 
+char *ft_capture_input(void) 
+{
+    char input[MAX_INPUT_SIZE];
+    int input_length;
+
+    printf("Entrez votre commande : ");
+    
+    // Utilisation de read pour lire l'entrée utilisateur
+    input_length = read(STDIN_FILENO, input, sizeof(input));
+    if (input_length == -1) 
+    {
+        perror("Erreur lors de la lecture de l'entrée utilisateur");
+        exit(EXIT_FAILURE);
+    }
+
+    // Supprimer le caractère de nouvelle ligne s'il est présent
+    if (input_length > 0 && input[input_length - 1] == '\n') 
+    {
+        input[input_length - 1] = '\0';
+    }
+
+    // À ce stade, 'input' contient la ligne de commande entrée par l'utilisateur
+    printf("Vous avez entré : %s\n", input);
+
+    return ft_strdup(input);  // N'oubliez pas de libérer la mémoire après usage
+}
+
 void ft_write_inputrc(void)
 {
     int fd;
@@ -13,7 +40,6 @@ void ft_write_inputrc(void)
         perror("ft_strjoin");
         exit(EXIT_FAILURE);
     }
-
     fd = open(home, O_WRONLY | O_APPEND | O_CREAT, S_IRUSR | S_IWUSR);
     if (fd == -1) 
     {
@@ -33,47 +59,23 @@ void ft_write_inputrc(void)
     free(home);
 }
 
-int main(int ac, char **av, char **envp) 
+int main(int ac, char **av, char **envp)
 {
-    t_mini shell;
+    t_mini *shell;
     t_env *envList;
-    t_commandList commandList;
     
-    (void)av;
-    if (ac > 1) 
+    shell = ft_initialize_minishell(ac, av, envp);
+    envList = ft_initialize_environment(envp);
+
+    if (ac > 1)
     {
-        fprintf(stderr, "CHAOS, there are too many arguments\n");
+        perror("CHAOS, there are too many arguments");
         return 1;
     }
-    
-    envList = NULL;
-    envList = ft_initialize_all(&shell, envp, envList);
 
-    while (1) 
-    {
-        // TO DO add signals here
-        ft_custom_prompt_msg(&shell);
+    ft_execute_minishell(shell, envList, envp);
 
-        if (shell.av == NULL) 
-        {
-            printf("Stop shell\n");
-            break;
-        }
-
-        ft_manage_history(&shell, shell.av);
-
-        if (ft_check_only_spaces(shell.av) == TRUE) 
-        {   
-            ft_destroy_current_shell(&shell);
-            continue;
-        } 
-        else if (ft_strcmp(shell.av, "") != 0) 
-        {
-            ft_launch_parsing(&commandList, shell.av, envList, envp);
-            ft_destroy_current_shell(&shell);
-        }
-    }
     ft_free_envList(envList);
-    ft_exit_shell(&shell);
+    ft_exit_shell(shell);
     return 0;
 }
