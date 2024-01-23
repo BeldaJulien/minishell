@@ -61,11 +61,11 @@ void ft_write_inputrc(void)
 
 int main(int ac, char **av, char **envp)
 {
-    t_mini *shell;
-    t_env *envList;
+    t_mini shell;
+    t_env envList;
     
-    shell = ft_initialize_minishell(ac, av, envp);
-    envList = ft_initialize_environment(envp);
+    ft_initialize_minishell(&shell, ac, av, envp);
+    ft_initialize_environment(&envList, envp);
 
     if (ac > 1)
     {
@@ -73,9 +73,9 @@ int main(int ac, char **av, char **envp)
         return 1;
     }
 
-    ft_execute_minishell(shell, envList, envp);
+    ft_execute_minishell(&shell, &envList, envp);
 
-    ft_free_envList(envList);
-    ft_exit_shell(shell);
+    ft_free_envList(&envList);
+    ft_exit_shell(&shell);
     return 0;
 }

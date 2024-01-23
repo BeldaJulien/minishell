@@ -13,9 +13,8 @@ void ft_exit_shell(t_mini *shell)
     }
 }
 
-t_env *ft_initialize_environment(char **env)
+void ft_initialize_environment(t_env *envList, char **env)
 {
-    t_env *envList;
     t_env *new_node;
     char **var_array;
     int i;
@@ -23,45 +22,44 @@ t_env *ft_initialize_environment(char **env)
     i = 0;
     envList = NULL;
     var_array = ft_env_duplicate(env);
+
     while (var_array[i])
     {
         new_node = ft_create_node_for_args(var_array[i]);
         ft_add_to_list(&envList, new_node);
         i++;
     }
-    ft_free_array(var_array);
 
-    return envList;
+    ft_free_array(var_array);
 }
 
-t_mini *ft_initialize_minishell(int ac, char **av, char **envp)
+void ft_initialize_minishell(t_mini *shell, int ac, char **av, char **envp)
 {
-    t_mini *shell;
-    
-    (void)ac;
-    (void)av;
-    (void)envp;
-    shell = (t_mini *)malloc(sizeof(t_mini));
     if (shell == NULL) 
     {
         perror("Error initializing mini shell");
         exit(EXIT_FAILURE);
     }
 
-    // Initialisation des membres de la structure mini_shell
+    (void)ac;
+    (void)av;
+    (void)envp;
+
     shell->av = NULL;
     shell->fd_history = 0;
     shell->stdin_fd = dup(STDIN_FILENO);
     shell->stdout_fd = dup(STDOUT_FILENO);
+    shell->error = NULL;
 
     shell->commands = (t_commandList *)malloc(sizeof(t_commandList));
+    if (shell->commands == NULL) 
+    {
+        perror("Error initializing mini shell: Memory allocation failure");
+        exit(EXIT_FAILURE);
+    }
+
     ft_initialize_commandList(shell->commands);
 
-    // Initialiser d'autres membres de global_data si nécessaire
-
-    shell->error = NULL; // Initialisez à NULL ou faites une initialisation appropriée
-
-    return shell;
 }
 
 void ft_execute_minishell(t_mini *shell, t_env *envList, char **envp)

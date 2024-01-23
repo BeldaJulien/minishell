@@ -209,8 +209,8 @@ void            ft_execute_piped_commands(t_commandList *commandList, t_command 
 // redirection
 // shell
 void            ft_exit_shell(t_mini *shell);
-t_env           *ft_initialize_environment(char **env);
-t_mini          *ft_initialize_minishell(int ac, char **av, char **envp);
+void            ft_initialize_environment(t_env *envList, char **env);
+void            ft_initialize_minishell(t_mini *shell, int ac, char **av, char **envp);
 void            ft_execute_minishell(t_mini *shell, t_env *envList, char **envp);
 // signal
 void            ft_receive_signal_from_user(int signal_num);
