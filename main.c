@@ -29,36 +29,6 @@ char *ft_capture_input(void)
     return ft_strdup(input);  // N'oubliez pas de libérer la mémoire après usage
 }
 
-void ft_write_inputrc(void)
-{
-    int fd;
-    char *home;
-
-    home = getenv("HOME");
-    home = ft_strjoin(home, "/.inputrc");
-    if (home == NULL) {
-        perror("ft_strjoin");
-        exit(EXIT_FAILURE);
-    }
-    fd = open(home, O_WRONLY | O_APPEND | O_CREAT, S_IRUSR | S_IWUSR);
-    if (fd == -1) 
-    {
-        perror("open");
-        free(home);
-        exit(EXIT_FAILURE);
-    }
-    const char *content = "set echo-control-characters Off\n";
-    ssize_t bytes_written = write(fd, content, strlen(content));
-    if (bytes_written == -1) {
-        perror("write");
-        close(fd);
-        free(home);
-        exit(EXIT_FAILURE);
-    }
-    close(fd);
-    free(home);
-}
-
 int main(int ac, char **av, char **envp)
 {
     t_mini shell;
@@ -69,7 +39,7 @@ int main(int ac, char **av, char **envp)
 
     if (ac > 1)
     {
-        perror("CHAOS, there are too many arguments");
+        perror("CHAOS, there are too many arguments\n");
         return 1;
     }
 

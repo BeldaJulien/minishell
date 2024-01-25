@@ -94,14 +94,14 @@ void ft_free_envList(t_env *envList)
 {
     t_env *temp;
     
+    temp = envList;
     while (envList != NULL) 
     {
-        temp = envList;
-        envList = envList->next;
         free(temp->name);
         free(temp->value);
         free(temp->next);
         free(temp->prev);
-        free(temp); // Libération de la mémoire pour le nœud
+        free(temp);
+        temp = temp->next;
     }
 }

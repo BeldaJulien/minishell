@@ -197,6 +197,12 @@ void            ft_destroy_commandList(t_commandList *commandList);
 // history
 void            ft_manage_history(t_mini *shell, const char *input);
 void            ft_custom_prompt_msg(t_mini *shell);
+// inputrc
+char            *ft_create_inputrc_path();
+int             ft_open_inputrc(const char *inputrc_path);
+void            ft_write_inputrc_content(int fd);
+void            ft_close_inputrc(int fd, char *inputrc_path);
+void            ft_write_inputrc();
 // path
 char            *ft_build_full_path(t_commandList *commandList); 
 void            ft_execute_command_with_relative_path(t_command *command);
@@ -226,7 +232,7 @@ void            free_split(char **arr);
 // LINKED LIST
 
 // add
-void            ft_add_to_list(t_env **envlist, t_env *new_node);
+void            ft_add_node_to_list(t_env **envlist, t_env *new_node);
 int	            ft_add_envVar_to_list(t_env **envlist, t_env *new_node, t_command *command);
 void            ft_append_to_list(t_commandList *commandList, t_command *newCommand);
 void            ft_append_to_list_arg(t_command *command, char *arg);
@@ -242,7 +248,7 @@ void            ft_free_env_node(t_env *new_node, t_env *tmp, char *str);
 void            ft_delete_node(t_commandList **head, t_command *node);
 void            ft_free_envList(t_env *envList);
 // create
-t_env	        *ft_create_node_for_args(char *var_array);
+t_env	        *ft_create_node_for_envList(char *var_array);
 t_command       *ft_create_node_for_command(void);
 t_env           *ft_create_node_for_export_argument(char *name, char *value);
 t_env	        *ft_create_node_for_envVar(t_command *command);
@@ -345,7 +351,6 @@ void            rl_replace_line(const char *str, int i);
 // MAIN
 char            *ft_capture_input(void);
 int             main(int ac, char **av, char **envp);
-void            ft_write_inputrc(void);
 void	        ft_exit_shell(t_mini *shell);
 
 #endif

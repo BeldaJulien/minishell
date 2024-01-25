@@ -37,18 +37,23 @@ void ft_manage_history(t_mini *shell, const char *input)
     }
 }
 
+/*
 void ft_custom_prompt_msg(t_mini *shell) 
 {
+    char *input;
+
     if (shell->av != NULL) {
         free(shell->av);
         shell->av = NULL; // Assurez-vous de mettre à NULL après la libération
     }
 
-    char *input = readline("\033[32mminishell$ \033[0m");
+    input = readline("\033[1;35mminishell$ \033[0m");
 
     // Vérifiez si l'utilisateur a appuyé sur Ctrl+D pour éviter de copier une chaîne NULL
-    if (input != NULL) {
+    if (input != NULL) 
+    {
         shell->av = ft_strdup(input);
         free(input); // Libérez la mémoire allouée par readline après la copie
     }
 }
+*/

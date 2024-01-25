@@ -5,8 +5,8 @@ t_env	*ft_create_node_for_args(char *var_array)
 	t_env	*new_node;
 	int		i;
 
-	new_node = malloc(sizeof(t_env));
 	i = 0;
+	new_node = malloc(sizeof(t_env));
 	if (new_node)
 	{
 		while (var_array[i] != '=' && var_array[i] != '\0')

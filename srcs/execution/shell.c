@@ -25,8 +25,8 @@ void ft_initialize_environment(t_env *envList, char **env)
 
     while (var_array[i])
     {
-        new_node = ft_create_node_for_args(var_array[i]);
-        ft_add_to_list(&envList, new_node);
+        new_node = ft_create_node_for_envList(var_array[i]);
+        ft_add_node_to_list(&envList, new_node);
         i++;
     }
 
@@ -50,15 +50,17 @@ void ft_initialize_minishell(t_mini *shell, int ac, char **av, char **envp)
     shell->stdin_fd = dup(STDIN_FILENO);
     shell->stdout_fd = dup(STDOUT_FILENO);
     shell->error = NULL;
-
-    shell->commands = (t_commandList *)malloc(sizeof(t_commandList));
+    shell->commands = NULL;
+    
+    /*
+    (t_commandList *)malloc(sizeof(t_commandList));
     if (shell->commands == NULL) 
     {
         perror("Error initializing mini shell: Memory allocation failure");
         exit(EXIT_FAILURE);
     }
-
     ft_initialize_commandList(shell->commands);
+    */
 
 }
 
@@ -67,12 +69,12 @@ void ft_execute_minishell(t_mini *shell, t_env *envList, char **envp)
     char *input;
     t_commandList commandList;
 
-    ft_write_inputrc();
+    // ft_write_inputrc();
 
     while (1)
     {
         // TO DO add signals here
-        ft_custom_prompt_msg(shell);
+        // ft_custom_prompt_msg(shell);
 
         if (shell->av == NULL) 
         {
