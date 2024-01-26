@@ -72,3 +72,35 @@ void ft_destroy_commandList(t_commandList *commandList)
     commandList->tail = NULL;
     commandList->length = 0;
 }
+
+
+
+void ft_print_commandList(t_commandList *commandList) 
+{
+    if (commandList == NULL || commandList->head == NULL) 
+    {
+        fprintf(stderr, "Command list is empty or NULL.\n");
+        return;
+    }
+    
+    int i;
+    t_command *current;
+    
+    current = commandList->head;
+
+    printf("Command List:\n");
+
+    while (current != NULL) 
+    {
+        printf("Command: %s\n", current->name);
+
+        // Print arguments
+        i = 0;
+        while (i < current->argCount) 
+        {
+            printf("Argument %d: %s\n", i, current->args[i]);
+            i++;
+        }
+        current = current->next;
+    }
+}

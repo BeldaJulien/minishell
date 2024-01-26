@@ -34,3 +34,29 @@ void ft_initialization_of_errors(t_mini *shell)
         }
     }
 }
+
+void ft_add_space_around_redirection(char *input) 
+{
+    char *src;
+    char modifiedInput[2000];
+    char *dest;
+
+    src = input;
+    dest = modifiedInput;
+    while (*src != '\0') 
+    {
+        if ((*src == '>' || *src == '<') && *(src + 1) != *src) 
+        {
+            *dest++ = ' ';  // Ajouter un espace avant l'opérateur
+            *dest++ = *src; // Copier l'opérateur
+            *dest++ = ' ';  // Ajouter un espace après l'opérateur
+        } else 
+        {
+            *dest++ = *src; // Copier le caractère actuel
+        }
+        src++;
+    }
+
+    *dest = '\0';  // Ajouter le caractère de fin de chaîne
+    ft_strcpy(input, modifiedInput);
+}

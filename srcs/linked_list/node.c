@@ -59,7 +59,9 @@ void	ft_swap_nodes(t_env *tmp)
 	}
 }
 
-t_env   *ft_find_envVar(t_envList *envList, const char *targetName) {
+/*
+t_env   *ft_find_envVar(t_env *envList, const char *targetName) 
+{
     t_env *var = envList->head;
 
     while (var != NULL) {
@@ -71,3 +73,4 @@ t_env   *ft_find_envVar(t_envList *envList, const char *targetName) {
 
     return NULL;
 }
+*/

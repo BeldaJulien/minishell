@@ -90,18 +90,18 @@ void ft_delete_node(t_commandList **head, t_command *node)
     free(node);
 }
 
-void ft_free_envList(t_env *envList) 
+void ft_free_envList(t_env *envList)
 {
-    t_env *temp;
-    
-    temp = envList;
-    while (envList != NULL) 
+    t_env *current; // Skip the initial empty node
+    t_env *next;
+
+    current = envList->next;
+    while (current != NULL)
     {
-        free(temp->name);
-        free(temp->value);
-        free(temp->next);
-        free(temp->prev);
-        free(temp);
-        temp = temp->next;
+        next = current->next;
+        free(current->name);
+        free(current->value);
+        free(current);
+        current = next;
     }
 }

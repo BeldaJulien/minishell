@@ -114,7 +114,7 @@ int ft_export(t_env **envList, t_command *cmd)
         }
         current = current->next;
     }
-    ft_add_node_to_list(envList, newVar);
+    ft_add_to_list(envList, newVar);
     return (0);
 }
 

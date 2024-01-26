@@ -2,6 +2,7 @@
 
 int g_exit_code = 0;
 
+/*
 char *ft_capture_input(void) 
 {
     char input[MAX_INPUT_SIZE];
@@ -28,24 +29,26 @@ char *ft_capture_input(void)
 
     return ft_strdup(input);  // N'oubliez pas de libérer la mémoire après usage
 }
+*/
 
 int main(int ac, char **av, char **envp)
 {
     t_mini shell;
-    t_env envList;
+    t_env *envList;
+    t_commandList commandList;
     
-    ft_initialize_minishell(&shell, ac, av, envp);
-    ft_initialize_environment(&envList, envp);
-
     if (ac > 1)
     {
         perror("CHAOS, there are too many arguments\n");
         return 1;
     }
 
-    ft_execute_minishell(&shell, &envList, envp);
-
-    ft_free_envList(&envList);
+    envList = NULL;
+    ft_initialize_minishell(&shell, ac, av, envp);
+    ft_initialize_environment(envList, envp);
+    ft_initialize_commandList(&commandList);
+    ft_execute_minishell(&commandList, &shell, envList, envp);
+    ft_free_envList(envList);
     ft_exit_shell(&shell);
     return 0;
 }

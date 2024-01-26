@@ -37,7 +37,7 @@ void ft_manage_history(t_mini *shell, const char *input)
     }
 }
 
-/*
+
 void ft_custom_prompt_msg(t_mini *shell) 
 {
     char *input;
@@ -56,4 +56,3 @@ void ft_custom_prompt_msg(t_mini *shell)
         free(input); // Libérez la mémoire allouée par readline après la copie
     }
 }
-*/

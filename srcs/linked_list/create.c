@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-t_env	*ft_create_node_for_args(char *var_array)
+t_env	*ft_create_node_for_envList(char *var_array)
 {
 	t_env	*new_node;
 	int		i;
@@ -36,7 +36,8 @@ t_command *ft_create_node_for_command(void)
     
     new_node_command = (t_command *)malloc(sizeof(t_command));
     
-    if (new_node_command == NULL) {
+    if (new_node_command == NULL) 
+    {
         fprintf(stderr, "Chaos, memory allocation failed with new_node_command\n");
         exit(EXIT_FAILURE);
     }    

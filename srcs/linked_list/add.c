@@ -1,24 +1,28 @@
 #include "minishell.h"
 
-void ft_add_to_list(t_env **envlist, t_env *new_node) 
+void ft_add_to_list(t_env **envList, t_env *new_node)
 {
-    t_env *current; 
+    t_env *current;
 
-    if (!envlist || !new_node)
-        return;
-
-    if (!*envlist) 
+    if (envList == NULL || new_node == NULL)
     {
-        *envlist = new_node;
         return;
     }
 
-    current = *envlist;
-    while (current->next != NULL) 
+    if (*envList == NULL)
     {
-        current = current->next; 
+        *envList = new_node;
     }
-    current->next = new_node;
+    else
+    {
+        current = *envList;
+        while (current->next != NULL)
+        {
+            current = current->next;
+        }
+        current->next = new_node;
+        new_node->prev = current;
+    }
 }
 
 int	ft_add_envVar_to_list(t_env **envlist, t_env *new_node, t_command *command)
@@ -61,11 +65,11 @@ void ft_append_to_list(t_commandList *commandList, t_command *newCommand)
         exit(EXIT_FAILURE);
     }
 
-    if (commandList->tail == NULL) 
-    {
-        fprintf(stderr, "Error: Attempting to append to an empty list\n");
-        exit(EXIT_FAILURE);
-    }
+    // if (commandList->tail == NULL) 
+    // {
+    //     fprintf(stderr, "Error: Attempting to append to an empty list\n");
+    //     exit(EXIT_FAILURE);
+    // }
 
     if (commandList->head == NULL) 
     {

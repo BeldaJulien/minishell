@@ -16,7 +16,7 @@ t_env	*ft_envlist_duplicate(t_env **envlist)
 		if (copy == NULL)
 			copy = new;
 		else
-			ft_add_node_to_list(&copy, new);
+			ft_add_to_list(&copy, new);
 		list = list->next;
 	}
 	return copy;
@@ -39,14 +39,17 @@ t_env	*ft_duplicate_node(char *name, char *value)
 
 char **ft_env_duplicate(char **envp)
 {
+	int i;
     char **copy;
-    int i = 0;
-
+    
+	i = 0;
     while (envp[i])
-        i++;
+		i++;
+
     copy = (char **)malloc(sizeof(char *) * (i + 1));
     if (!copy)
         return NULL;
+		
     i = 0;
     while (envp[i])
     {
