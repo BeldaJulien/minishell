@@ -24,10 +24,13 @@ int cd(t_command *command)
     return 0;
 }
 
+/*
 void ft_process_cd_argument(t_command *command, char *arg) 
 {
+    
     // Assurez-vous que la structure t_command est correctement initialisée avec les arguments
     command->args = malloc(2 * sizeof(char *));
     command->args[0] = ft_strdup(arg);
     command->args[1] = NULL;
 }
+*/

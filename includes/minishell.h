@@ -179,7 +179,6 @@ void            ft_configure_child_process(t_command *commands, int num_commands
 // command
 int             ft_execute_single_command(t_command *command, t_commandList *commandList, t_env *envList, char **envp); 
 void            ft_execute_external_command(t_command *command, t_commandList *commandList, char **envp); 
-void            ft_add_argument_to_command(t_command *command, const char *argument);
 void            ft_printCommand(t_command *command);
 
 // commandList
@@ -247,8 +246,6 @@ void            ft_free_envList(t_env *envList);
 t_env           *ft_create_node_for_envList(char *var_array);
 void            ft_init_new_node(t_commandList *commandList, t_command *command, char *token);
 t_env           *ft_create_node_for_export_argument(char *name, char *value);
-t_env	        *ft_create_node_for_envVar(t_command *command);
-void            *ft_create_node_by_type(void *node, t_node_type type, t_command *command);
 // duplicate
 t_env	        *ft_envlist_duplicate(t_env **envlist);
 t_env	        *ft_duplicate_node(char *name, char *value);
@@ -291,7 +288,7 @@ int             ft_calculate_new_length(const char *cmd, int last_exit_status);
 char            *ft_expand_env_variables(t_command *command, int last_exit_status);
 // parser
 void            ft_process_the_first_token_as_a_command(t_commandList *commandList, char *token);
-void            ft_process_token_as_an_argument(t_commandList *commandList, t_command *command, char *token, int tokenIndex);
+void            ft_process_token_as_an_argument(t_commandList *commandList, t_command *command, char *token);
 int             ft_split_input_in_token_to_commandList(t_commandList *commandList, char *input);
 int             ft_parse_and_add_to_commandList(t_commandList *commandList, char *input);
 int             ft_launch_parsing_and_execution(t_commandList *commandList, char *input, t_env *envList, char **envp);

@@ -54,37 +54,6 @@ void ft_execute_external_command(t_command *command, t_commandList *commandList,
     }
 }
 
-void ft_add_argument_to_command(t_command *command, const char *argument) 
-{
-    int i;
-    char **newArgs;
-    
-    newArgs = (char **)malloc((command->argCount + 1) * sizeof(char *));
-    if (!newArgs) perror("Memory allocation failed in ft_add_argument_to_command"), exit(EXIT_FAILURE);
-
-    i = 0;
-    while (i < command->argCount) 
-    {
-        if (!(newArgs[i] = strdup(command->args[i])))
-            perror("Memory allocation failed in ft_add_argument_to_command"), exit(EXIT_FAILURE);
-        i++;
-    }
-
-    if (!(newArgs[command->argCount] = strdup(argument)))
-        perror("Memory allocation failed in ft_add_argument_to_command"), exit(EXIT_FAILURE);
-
-    i = 0;
-    while (i < command->argCount) 
-    {
-        free(command->args[i]);
-        i++;
-    }
-    free(command->args);
-
-    command->args = newArgs;
-    command->argCount++;
-}
-
 void ft_printCommand(t_command *command) {
     if (command != NULL) {
         printf("Command Name: %s\n", command->name);

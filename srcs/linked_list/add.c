@@ -25,18 +25,18 @@ void ft_add_to_list(t_env **envList, t_env *new_node)
     }
 }
 
-int	ft_add_envVar_to_list(t_env **envlist, t_env *new_node, t_command *command)
-{
-	new_node = NULL;
-	new_node = ft_create_node_for_envVar(command);
-	if (!new_node)
-		return (0);
-	if (!ft_is_in_list(new_node->name, envlist))
-		ft_add_to_list(envlist, new_node);
-	else
-		ft_replace_in_list(new_node, envlist);
-	return (1);
-}
+// int	ft_add_envVar_to_list(t_env **envlist, t_env *new_node, t_command *command)
+// {
+// 	new_node = NULL;
+// 	new_node = ft_create_node_for_envVar(command);
+// 	if (!new_node)
+// 		return (0);
+// 	if (!ft_is_in_list(new_node->name, envlist))
+// 		ft_add_to_list(envlist, new_node);
+// 	else
+// 		ft_replace_in_list(new_node, envlist);
+// 	return (1);
+// }
 
 void ft_initialize_list(t_commandList *commandList, t_command *newCommand) 
 {
