@@ -80,19 +80,18 @@ int ft_split_input_in_token_to_commandList(t_commandList *commandList, char *inp
     }
 
     printf("Processing first token as a command\n");
-    // TO DO HANDLE CD
-    // if (tokenIndex == 0 && ft_strcmp(token, "cd") == 0) {
-    //     ft_process_cd_argument(commandList, token);
-    // }
-    // else {
-    //     ft_process_the_first_token_as_a_command(commandList, token);
-    // }
+  
     ft_process_the_first_token_as_a_command(commandList, token);
 
     tokenIndex++;
 
     while ((token = ft_strtok(NULL, " ")) != NULL) 
     {
+        if (tokenIndex == 1 && ft_strcmp(commandList->tail->name, "cd") == 0) 
+        {
+            ft_process_cd_argument(commandList->tail, token);
+            break;
+        }
         printf("Launch ft_process_token_as_an_argument with argument number %d: named %s\n", tokenIndex, token);
         ft_process_token_as_an_argument(commandList, commandList->tail, token);
         tokenIndex++;
@@ -113,7 +112,7 @@ int ft_parse_and_add_to_commandList(t_commandList *commandList, char *input)
     } 
     else 
     {
-        perror("Parsing failed");
+        perror("Parsing failed in ft_parse_and_add_to_commandList");
         ft_destroy_command(commandList);
         return 1;
     }
