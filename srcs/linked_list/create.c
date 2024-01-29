@@ -30,27 +30,68 @@ t_env	*ft_create_node_for_envList(char *var_array)
 	return NULL;
 }
 
-t_command *ft_create_node_for_command(void)
+// t_command *ft_init_node_for_command(command)
+// { 
+//     command->argCount = 0;
+//     command->name = NULL;
+//     command->args = NULL;
+//     command->redirectFile = NULL;
+//     command->next = NULL;
+//     command->prev = NULL;
+//     command->tokenType = NOT;
+//     command->quoteType = NORMAL;
+    
+//     return new_node_command;
+// }
+
+// t_command *ft_init_new_command(char *name) 
+// {
+//     t_command *newCommand;
+    
+//     newCommand = (t_command *)malloc(sizeof(t_command));
+    
+//     if (newCommand == NULL) 
+//     {
+//         perror("Memory allocation failed in ft_init_new_command");
+//         exit(EXIT_FAILURE);
+//     }
+
+//     // Initialisation des champs de la structure
+//     newCommand->name = strdup(name);
+//     newCommand->data = NULL; // À ajuster en fonction de l'utilisation prévue de `data`
+//     newCommand->args = NULL;
+//     newCommand->argCount = 0;
+//     newCommand->redirectFile = NULL;
+//     newCommand->fd[0] = newCommand->fd[1] = -1;
+//     newCommand->next = NULL;
+//     newCommand->prev = NULL;
+//     newCommand->tokenType = COMMAND_TYPE; // Assurez-vous d'ajuster cela si nécessaire
+//     newCommand->quoteType = NORMAL;/* Assurez-vous d'ajuster cela en fonction de votre logique */
+
+//     return newCommand;
+// }
+
+void ft_init_new_node(t_commandList *commandList, t_command *command, char *token)
 {
-    t_command *new_node_command;
-    
-    new_node_command = (t_command *)malloc(sizeof(t_command));
-    
-    if (new_node_command == NULL) 
+    command->name = ft_strdup(token);
+    command->data = NULL;
+    command->args = (char **)malloc(sizeof(char *) * 2);
+    if (command->args == NULL) 
     {
-        fprintf(stderr, "Chaos, memory allocation failed with new_node_command\n");
+        perror("CHAOS, error allocating memory");
+        ft_destroy_command(commandList);
         exit(EXIT_FAILURE);
-    }    
-    new_node_command->argCount = 0;
-    new_node_command->name = NULL;
-    new_node_command->args = NULL;
-    new_node_command->redirectFile = NULL;
-    new_node_command->next = NULL;
-    new_node_command->prev = NULL;
-    new_node_command->tokenType = NOT;
-    new_node_command->quoteType = NORMAL;
-    
-    return new_node_command;
+    }
+    command->args[0] = ft_strdup(token);
+    command->args[1] = NULL;
+    command->argCount = 1;
+    command->redirectFile = NULL;
+    command->fd[0] = -1;
+    command->fd[1] = -1;
+    command->next = NULL;
+    command->prev = NULL;
+    command->tokenType = ft_allocate_token_type(token);
+    command->quoteType = ft_check_and_allocate_quote_type(token);
 }
 
 t_env *ft_create_node_for_export_argument(char *name, char *value)
@@ -88,6 +129,7 @@ t_env *ft_create_node_for_envVar(t_command *cmd)
     return new_node;
 }
 
+/*
 void *ft_create_node_by_type(void *node, t_node_type type, t_command *command) 
 {
     if (node == NULL) {
@@ -100,3 +142,4 @@ void *ft_create_node_by_type(void *node, t_node_type type, t_command *command)
     }
     return NULL;
 } 
+*/

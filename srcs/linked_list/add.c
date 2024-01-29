@@ -57,37 +57,27 @@ void ft_initialize_list(t_commandList *commandList, t_command *newCommand)
     commandList->length = 1;
 }
 
-void ft_append_to_list(t_commandList *commandList, t_command *newCommand) 
+void ft_append_to_commandList(t_commandList *commandList, t_command *newNode) 
 {
-    if (commandList == NULL || newCommand == NULL) 
+    if (commandList == NULL || newNode == NULL) 
     {
-        fprintf(stderr, "Error: Invalid commandList or newCommand.\n");
+        perror("Error in ft_append_to_list: Invalid commandList or newCommand.\n");
         exit(EXIT_FAILURE);
     }
 
-    // if (commandList->tail == NULL) 
-    // {
-    //     fprintf(stderr, "Error: Attempting to append to an empty list\n");
-    //     exit(EXIT_FAILURE);
-    // }
+    newNode->next = NULL;
 
-    if (commandList->head == NULL) 
+     if (commandList->head == NULL) 
+     {
+        commandList->head = newNode;
+        commandList->tail = newNode;
+    } else 
     {
-        ft_initialize_list(commandList, newCommand);
-    } 
-    else 
-    {
-        if (commandList->tail->next != NULL) 
-        {
-            fprintf(stderr, "Error: Inconsistent list structure\n");
-            exit(EXIT_FAILURE);
-        }
-
-        commandList->tail->next = newCommand;
-        commandList->tail = commandList->tail->next;
+        commandList->tail = newNode;
         commandList->tail->next = NULL;
-        commandList->length++;
     }
+    commandList->length++;
+
 }
 
 void ft_appendToListArg(t_command *command, char *arg) 
@@ -124,11 +114,4 @@ void ft_print_list(t_commandList *head, void (*printFunction)(void *data))
         printFunction(current);
         current = current->next;
     }
-}
-
-void ft_print_command(void *data) 
-{
-    t_command *command = (t_command *)data;
-    if (command != NULL) 
-        printf("Command: %s\n", command->name);
 }

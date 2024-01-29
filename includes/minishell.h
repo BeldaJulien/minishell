@@ -179,9 +179,8 @@ void            ft_configure_child_process(t_command *commands, int num_commands
 // command
 int             ft_execute_single_command(t_command *command, t_commandList *commandList, t_env *envList, char **envp); 
 void            ft_execute_external_command(t_command *command, t_commandList *commandList, char **envp); 
-void            ft_process_command(t_commandList *commandList, char *token);
-t_command       *ft_init_new_command(char *name);
-void            ft_add_argument_to_command(t_command *command, const char *argument); 
+void            ft_add_argument_to_command(t_command *command, const char *argument);
+void            ft_printCommand(t_command *command);
 
 // commandList
 void            ft_initialize_commandList(t_commandList *commandList);
@@ -213,8 +212,8 @@ void            ft_execute_piped_commands(t_commandList *commandList, t_command 
 // redirection
 // shell
 void            ft_exit_shell(t_mini *shell);
-void            ft_initialize_environment(t_env *envList, char **env);
-void            ft_initialize_minishell(t_mini *shell, int ac, char **av, char **envp);
+void            ft_initialize_environment(t_env **envList, char **env);
+void            ft_initialize_minishell(t_mini *shell);
 void            ft_execute_minishell(t_commandList *commandList, t_mini *shell, t_env *envList, char **envp);
 // signal
 void            ft_receive_signal_from_user(int signal_num);
@@ -232,9 +231,8 @@ void            free_split(char **arr);
 // add
 void            ft_add_to_list(t_env **envlist, t_env *new_node);
 int	            ft_add_envVar_to_list(t_env **envlist, t_env *new_node, t_command *command);
-void            ft_append_to_list(t_commandList *commandList, t_command *newCommand);
+void            ft_append_to_commandList(t_commandList *commandList, t_command *newNode);
 void            ft_append_to_list_arg(t_command *command, char *arg);
-void            ft_print_command(void *data);
 void            ft_print_list(t_commandList *head, void (*printFunction)(void *data));
 
 // clean
@@ -247,7 +245,7 @@ void            ft_delete_node(t_commandList **head, t_command *node);
 void            ft_free_envList(t_env *envList);
 // create
 t_env           *ft_create_node_for_envList(char *var_array);
-t_command       *ft_create_node_for_command(void);
+void            ft_init_new_node(t_commandList *commandList, t_command *command, char *token);
 t_env           *ft_create_node_for_export_argument(char *name, char *value);
 t_env	        *ft_create_node_for_envVar(t_command *command);
 void            *ft_create_node_by_type(void *node, t_node_type type, t_command *command);
@@ -292,9 +290,10 @@ char            *ft_getenv_var_value(const char *name);
 int             ft_calculate_new_length(const char *cmd, int last_exit_status);
 char            *ft_expand_env_variables(t_command *command, int last_exit_status);
 // parser
-void            ft_init_new_node(t_commandList *commandList, t_command *command, char *token);
-void            ft_process_argument(t_commandList *commandList, t_command *command, char *token, int argIndex);
+void            ft_process_the_first_token_as_a_command(t_commandList *commandList, char *token);
+void            ft_process_token_as_an_argument(t_commandList *commandList, t_command *command, char *token, int tokenIndex);
 int             ft_split_input_in_token_to_commandList(t_commandList *commandList, char *input);
+int             ft_parse_and_add_to_commandList(t_commandList *commandList, char *input);
 int             ft_launch_parsing_and_execution(t_commandList *commandList, char *input, t_env *envList, char **envp);
 // pipe
 void            ft_create_pipes(int pipes[2]);

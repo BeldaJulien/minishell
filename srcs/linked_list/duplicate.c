@@ -45,11 +45,9 @@ char **ft_env_duplicate(char **envp)
 	i = 0;
     while (envp[i])
 		i++;
-
     copy = (char **)malloc(sizeof(char *) * (i + 1));
     if (!copy)
         return NULL;
-		
     i = 0;
     while (envp[i])
     {

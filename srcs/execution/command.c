@@ -2,7 +2,7 @@
 
 int ft_execute_single_command(t_command *command, t_commandList *commandList, t_env *envList, char **envp) 
 {
-    if (command->tokenType == COMMAND_TYPE) 
+    if (command) 
     {
         if (ft_is_builtin(command)) 
         {
@@ -54,70 +54,6 @@ void ft_execute_external_command(t_command *command, t_commandList *commandList,
     }
 }
 
-void ft_process_command(t_commandList *commandList, char *token) 
-{
-    t_command *command;
-    
-    command = ft_create_node_for_command();
-    if (command == NULL) 
-    {
-        perror("CHAOS, error allocating memory");
-        ft_destroy_command(commandList);
-        exit(EXIT_FAILURE);
-    }
-
-    command->name = ft_strdup(token);
-    command->tokenType = ft_allocate_token_type(token);
-    command->args = (char **)malloc(sizeof(char *) * 2);
-    if (command->args == NULL) 
-    {
-        perror("CHAOS, error allocating memory");
-        ft_destroy_command(commandList);
-        exit(EXIT_FAILURE);
-    }
-    command->args[0] = ft_strdup(token);
-    command->args[1] = NULL;
-
-    if (commandList->head == NULL) 
-    {
-        commandList->head = command;
-        commandList->tail = commandList->head;
-    } 
-    else 
-    {
-        commandList->tail->next = command;
-        commandList->tail = commandList->tail->next;
-    }
-    commandList->length++;
-}
-
-t_command *ft_init_new_command(char *name) 
-{
-    t_command *newCommand;
-    
-    newCommand = (t_command *)malloc(sizeof(t_command));
-    
-    if (newCommand == NULL) 
-    {
-        perror("Memory allocation failed in ft_init_new_command");
-        exit(EXIT_FAILURE);
-    }
-
-    // Initialisation des champs de la structure
-    newCommand->name = strdup(name);
-    newCommand->data = NULL; // À ajuster en fonction de l'utilisation prévue de `data`
-    newCommand->args = NULL;
-    newCommand->argCount = 0;
-    newCommand->redirectFile = NULL;
-    newCommand->fd[0] = newCommand->fd[1] = -1;
-    newCommand->next = NULL;
-    newCommand->prev = NULL;
-    newCommand->tokenType = COMMAND_TYPE; // Assurez-vous d'ajuster cela si nécessaire
-    newCommand->quoteType = NORMAL;/* Assurez-vous d'ajuster cela en fonction de votre logique */
-
-    return newCommand;
-}
-
 void ft_add_argument_to_command(t_command *command, const char *argument) 
 {
     int i;
@@ -147,4 +83,24 @@ void ft_add_argument_to_command(t_command *command, const char *argument)
 
     command->args = newArgs;
     command->argCount++;
+}
+
+void ft_printCommand(t_command *command) {
+    if (command != NULL) {
+        printf("Command Name: %s\n", command->name);
+        printf("Command Data: %p\n", command->data);
+        printf("Command Arguments:\n");
+        for (int i = 0; i < command->argCount; ++i) {
+            printf("  Argument %d: %s\n", i, command->args[i]);
+        }
+        printf("Argument Count: %d\n", command->argCount);
+        printf("Redirect File: %s\n", command->redirectFile);
+        printf("Pipe File Descriptors: %d, %d\n", command->fd[0], command->fd[1]);
+        printf("Next Command: %p\n", (void *)command->next);
+        printf("Previous Command: %p\n", (void *)command->prev);
+        printf("Token Type: %d\n", command->tokenType);
+        printf("Quote Type: %d\n", command->quoteType);
+    } else {
+        printf("Command is NULL\n");
+    }
 }

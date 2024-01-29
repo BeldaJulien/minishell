@@ -12,32 +12,35 @@ void ft_exit_shell(t_mini *shell)
     }
 }
 
-void ft_initialize_environment(t_env *envList, char **env)
+void ft_initialize_environment(t_env **envList, char **env)
 {
     int i;
     char **var_array;
     t_env *new_envList_node;
 
+    if (!envList)
+    {
+        perror("Error: Invalid pointer to envList");
+        exit(EXIT_FAILURE);
+    }
+
     i = 0;
-    envList = (t_env *)malloc(sizeof(t_env));
-    envList->name = NULL;
-    envList->value = NULL;
-    envList->next = NULL;
-    envList->prev = NULL;
+
+    *envList = NULL;
 
     var_array = ft_env_duplicate(env);
  
     while (var_array[i])
     {
         new_envList_node = ft_create_node_for_envList(var_array[i]);
-        ft_add_to_list(&envList, new_envList_node);
+        ft_add_to_list(envList, new_envList_node);
         i++;
     }
 
     ft_free_array(var_array);
 }
 
-void ft_initialize_minishell(t_mini *shell, int ac, char **av, char **envp)
+void ft_initialize_minishell(t_mini *shell)
 {
     if (shell == NULL) 
     {
@@ -45,27 +48,12 @@ void ft_initialize_minishell(t_mini *shell, int ac, char **av, char **envp)
         exit(EXIT_FAILURE);
     }
 
-    (void)ac;
-    (void)av;
-    (void)envp;
-
     shell->av = NULL;
     shell->fd_history = 0;
     shell->stdin_fd = dup(STDIN_FILENO);
     shell->stdout_fd = dup(STDOUT_FILENO);
     shell->error = NULL;
     shell->commands = NULL;
-    
-    /*
-    (t_commandList *)malloc(sizeof(t_commandList));
-    if (shell->commands == NULL) 
-    {
-        perror("Error initializing mini shell: Memory allocation failure");
-        exit(EXIT_FAILURE);
-    }
-    ft_initialize_commandList(shell->commands);
-    */
-
 }
 
 void ft_execute_minishell(t_commandList *commandList, t_mini *shell, t_env *envList, char **envp)
