@@ -16,7 +16,7 @@ char *ft_getenv_var_value(const char *name) {
     }
 }
 
-int ft_calculate_new_length(const char *cmd, int last_exit_status) {
+int ft_calculate_new_length(const char *cmd, int g_exit_code) {
     int length = 0;
     int i = 0;
 
@@ -24,7 +24,7 @@ int ft_calculate_new_length(const char *cmd, int last_exit_status) {
         if (cmd[i] == '$') {
             i++;
             if (cmd[i] == '?') {
-                char *status_str = ft_itoa(last_exit_status);
+                char *status_str = ft_itoa(g_exit_code);
                 length += ft_strlen(status_str);
                 free(status_str);
                 i++;
@@ -44,11 +44,11 @@ int ft_calculate_new_length(const char *cmd, int last_exit_status) {
     return length;
 }
 
-char *ft_expand_env_variables(t_command *command, int last_exit_status) 
+char *ft_expand_env_variables(t_command *command, int g_exit_code) 
 {
     if (!command) return NULL;
 
-    char *result = malloc(ft_calculate_new_length(command->name, last_exit_status) + 1);
+    char *result = malloc(ft_calculate_new_length(command->name, g_exit_code) + 1);
     if (!result) return NULL;
 
     int i = 0, j = 0;
@@ -57,7 +57,7 @@ char *ft_expand_env_variables(t_command *command, int last_exit_status)
             i++;
             char *var_value;
             if (command->name[i] == '?') {
-                var_value = ft_itoa(last_exit_status);
+                var_value = ft_itoa(g_exit_code);
                 i++;
             } else {
                 int start = i;

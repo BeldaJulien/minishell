@@ -1,11 +1,15 @@
 #include "minishell.h"
 
-int echo(t_command *cmd) 
+//  passer le code de sortie (g_exit_code) à cette fonction 
+// pour gérer correctement l'expansion des variables telles que $?
+
+int echo(t_command *cmd, int g_exit_code)
 {
     const char *message;
     int i;
     int suppressNewline;
     
+    (void)g_exit_code;
     message = "An error occurred: not enough arguments\n";
     i = 1;
     suppressNewline = 0;

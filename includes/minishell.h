@@ -142,7 +142,7 @@ int	            cd(t_command *command);
 void            ft_process_cd_argument(t_command *command, char *arg);
 
 // echo
-int             echo(t_command *cmd);
+int             echo(t_command *cmd, int g_exit_code);
 // env
 int 	        env(t_env *env_list);
 void            ft_display_envList(t_env *envList);
@@ -162,7 +162,7 @@ int             ft_export(t_env **envlist, t_command *cmd);
 // pwd
 int 	        pwd(void);
 // unset
-int	            ft_unset(t_env **env_list, t_command *cmd);
+int	            ft_unset(t_env **envList, t_command *cmd);
 
 // EXECUTION
 
@@ -284,8 +284,8 @@ void            ft_add_space_around_redirection(char *input);
 // expansion
 int             ft_is_valid_env_char(char c);
 char            *ft_getenv_var_value(const char *name);
-int             ft_calculate_new_length(const char *cmd, int last_exit_status);
-char            *ft_expand_env_variables(t_command *command, int last_exit_status);
+int             ft_calculate_new_length(const char *cmd, int g_exit_code);
+char            *ft_expand_env_variables(t_command *command, int g_exit_code);
 // parser
 void            ft_process_the_first_token_as_a_command(t_commandList *commandList, char *token);
 void            ft_process_token_as_an_argument(t_commandList *commandList, t_command *command, char *token);
