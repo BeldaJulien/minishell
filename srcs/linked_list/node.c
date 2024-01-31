@@ -2,8 +2,12 @@
 
 t_command  *ft_get_previous_node(t_commandList  *head, t_command  *node)
 {
-    t_command *current = head->head;
-    t_command  *previous = NULL;
+    t_command *current;
+    t_command  *previous;
+
+    current = head->head;
+    previous = NULL;
+
     while (current != NULL)
     {
         if(current == node)
@@ -16,23 +20,32 @@ t_command  *ft_get_previous_node(t_commandList  *head, t_command  *node)
 
 t_command  *ft_find_node(t_commandList  *head, void *target)
 {
-    t_command  *current = head->head;
+    t_command  *current;
+    
+    current = head->head;
+
     while (current != NULL)
     {
         if (ft_compareString(current->data, target) == 0)
             return current;
         current = current->next;
     }
+
     return NULL;
 }
 
 void    *ft_get_last_element_in_list(t_commandList *head)
 {
+    t_command *current;
+
 	if (head == NULL)
         return NULL;
-    t_command *current = head->head;
+    
+    current = head->head;
+
     while (current->next != NULL)
         current = current->next;
+
     return current->data;
 }
 

@@ -19,7 +19,7 @@ int ft_unset(t_env **envList, t_command *cmd)
     }
 
     if (check_node == NULL) {
-        return EXIT_FAILURE; // La variable n'existe pas
+        return EXIT_FAILURE;
     }
 
     if (prev_node != NULL) {
