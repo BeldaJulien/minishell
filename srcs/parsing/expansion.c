@@ -2,37 +2,25 @@
 
 int ft_is_valid_env_char(char c) 
 {
-    // Vérifie si le caractère n'est pas une lettre majuscule, une lettre minuscule ou un chiffre
-    if (isupper(c) || islower(c) || isdigit(c))
-        return 0;
-    return 1;
+    return !(isupper(c) || islower(c) || isdigit(c));
 }
+
 
 // DO NOT free if returning empty line resulting of getenv
 char *ft_get_env_var_value(char *var_name) 
 {
     char *value;
 
-    if (!var_name) return NULL;
+    if (!var_name) 
+        return NULL;
     
-    printf("0) Value of var_name sent to get_env_var_value is : %s\n", var_name);
-
     value = getenv(var_name);
-
-    printf("1) Value of value = getenv(var_name); is : %s\n", value);
 
     // Duplique la valeur pour éviter les problèmes avec la mémoire partagée
     if (value != NULL) 
-    {
-        printf("2) Value of %s: %s\n", var_name, value);
         return ft_strdup(value);
-    }
     else 
-    {
-        printf("3) Value of the var_name is : '%s'\n", var_name);
         return NULL;
-        // return strdup("");
-    }
 }
 
 int ft_calculate_var_length(char *var_name, int g_exit_code) 
@@ -103,8 +91,8 @@ int ft_calculate_new_length(char *cmd, int g_exit_code)
 
 void ft_process_char(char *result, int *j, char *command, int *i) 
 {
-    char *var_name;
     int start;
+    char *var_name;
     char *expanded_var;
 
     if (command[*i] == '$') 
@@ -122,11 +110,16 @@ void ft_process_char(char *result, int *j, char *command, int *i)
         // Expansion de la variable d'environnement
         expanded_var = ft_expand_single_env_var(var_name);
         printf("The expanded_var in ft_process_char after ft_expand_single_env_var(var_name) is :'%s'\n", expanded_var);
-        free(var_name);
 
         // Concaténer la variable d'environnement étendue au résultat
-        ft_strcat(result, expanded_var);
+        // ft_strcat(result, expanded_var);
+        free(var_name);
+        ft_strcpy(result + *j, expanded_var);
         *j += ft_strlen(expanded_var);
+        write(STDOUT_FILENO, expanded_var, ft_strlen(expanded_var));
+
+        // Libérer la mémoire
+        
         free(expanded_var);
     } else {
         result[*j] = command[*i];
@@ -135,12 +128,11 @@ void ft_process_char(char *result, int *j, char *command, int *i)
     }
 }
 
-
 char *ft_expand_single_env_var(char *var_name) 
 {
     char *value;
 
-    if (!var_name) return ft_strdup("");  // Retourne une chaîne vide si le nom de la variable est NULL
+    // if (!var_name) return ft_strdup("");  // Retourne une chaîne vide si le nom de la variable est NULL
 
     printf("The var_name in ft_expand_single_env_varp is :'%s'\n", var_name);
 
@@ -154,29 +146,22 @@ char *ft_expand_single_env_var(char *var_name)
     return value;
 }
 
-char *ft_expand_env_variables(char *command) 
-{    
+char *ft_expand_env_variables(char *command)
+ {
     if (!command) return NULL;
 
-    int i;
-    int j;
-    int new_length;
-    char *result;
-    
-    new_length = ft_calculate_new_length(command, g_exit_code);
-    result = (char *)malloc(new_length + 1);
+    int i = 0, j = 0;
+    int new_length = ft_calculate_new_length(command, g_exit_code);
+    char *result = (char *)malloc(new_length + 1);
+
     if (!result) 
         return NULL;
 
-    i = 0;
-    j = 0;
-    while (command[i] != '\0')
-    {
-        printf("the command sent to ft_process_char is '%s'\n", command);
+    while (command[i] != '\0') {
         ft_process_char(result, &j, command, &i);
     }
 
     result[j] = '\0';
-    printf("the result in ft_expand_env_variables is '%s'\n", result);
     return result;
 }
+

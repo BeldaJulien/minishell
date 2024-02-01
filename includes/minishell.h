@@ -144,9 +144,9 @@ void            ft_process_cd_argument(t_command *command, char *arg);
 // echo
 void            ft_handle_argument(char *arg);
 void            ft_handle_space();
-void            ft_echo_args(t_command *cmd);
+void            ft_echo_args(char **args, int g_exit_code);
 void            print_error_message(char *message);
-int             echo(t_command *cmd, int g_exit_code);
+int             echo(char **args, int g_exit_code);
 // env
 int 	        env(t_env *env_list);
 void            ft_display_envList(t_env *envList);

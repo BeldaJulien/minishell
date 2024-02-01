@@ -25,17 +25,32 @@ void ft_handle_space()
 }
 
 // Fonction principale pour l'affichage des arguments de la commande echo
-void ft_echo_args(t_command *cmd) 
+void ft_echo_args(char **args, int g_exit_code) 
 {
-    int i;
-    
-    i = 1;
+    if (args == NULL) 
+        return;
 
-    while (cmd->args[i] != NULL) 
+    (void)g_exit_code;
+    int i = 1;
+
+    while (args[i] != NULL) 
     {
-        ft_handle_argument(cmd->args[i]);
+        char *expanded_arg = ft_expand_env_variables(args[i]);
 
-        if (cmd->args[i + 1] != NULL)
+        if (expanded_arg != NULL) 
+        {
+            // CHEATING HERE sent in void ft_process_char(char *result, int *j, char *command, int *i) 
+            // try tests and bugs ?
+            // write(STDOUT_FILENO, expanded_arg, ft_strlen(expanded_arg));
+            free(expanded_arg);
+        } 
+        else 
+        {
+            perror("Error expanding environment variables\n");
+            exit(1);
+        }
+
+        if (args[i + 1] != NULL)
             ft_handle_space();
 
         i++;
@@ -48,27 +63,25 @@ void print_error_message(char *message)
 }
 
 // Fonction principale pour la commande echo
-int echo(t_command *cmd, int g_exit_code) 
+int echo(char **args, int g_exit_code) 
 {
-    char *message;
-    int suppressNewline;
+    char *message = "An error occurred in echo: not enough arguments\n";
+    int suppressNewline = 0;
 
-    (void)g_exit_code;
-    message = "An error occurred in echo : not enough arguments\n";
-    suppressNewline = 0;
-
-    if (cmd == NULL || cmd->args == NULL) 
+    if (args == NULL || args[1] == NULL) 
     {
-        print_error_message(message);
+        write(STDERR_FILENO, message, strlen(message));
         return 1;
     }
 
-    if (cmd->args[1] != NULL && ft_strcmp(cmd->args[1], "-n") == 0) 
+    if (ft_strcmp(args[1], "-n") == 0)
     {
         suppressNewline = 1;
-        ft_echo_args(cmd);
-    } else {
-        ft_echo_args(cmd);
+        ft_echo_args(args, g_exit_code);
+    } 
+    else 
+    {
+        ft_echo_args(args, g_exit_code);
         if (!suppressNewline) 
             write(STDOUT_FILENO, "\n", 1);
     }
