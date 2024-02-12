@@ -2,8 +2,10 @@
 
 void ft_execute_command_with_absolute_path(t_command *command)
 {
+    printf("la\n");
     if (execve(command->name, command->args, NULL) == -1)
     {
+            (printf("la non\n"));
             perror("Error executing absolute path");
             exit(EXIT_FAILURE);  
     }
@@ -63,9 +65,12 @@ void ft_execute_command_with_path(t_command *command) {
 
     if (command->name[0] == '/') 
     {
-        ft_execute_command_with_absolute_path(command);  
-    } else if (command->name[0] == '.') 
+        printf("ici\n");
+        ft_execute_command_with_absolute_path(command); 
+    } 
+    else if (command->name[0] == '.') 
     {
+        printf("ou ici\n");
         ft_execute_command_with_relative_path(command);   
     } 
 }
