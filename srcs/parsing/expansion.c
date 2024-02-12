@@ -1,6 +1,7 @@
 #include "minishell.h"
 
-int ft_is_valid_env_char(char c) {
+int ft_is_valid_env_char(char c) 
+{
     return ft_isalpha(c) || (c == '_');
 }
 

@@ -328,6 +328,14 @@ void ft_execute_command_with_path(t_command *command);
 void process_command(t_commandList *commandList, char *token, int tokenIndex);
 void process_argument(t_commandList *commandList, t_command *command, char *token, int argIndex);
 void process_cd_argument(t_command *command, char *arg);
+char *ft_replace_usd_to_env(t_env *envList, char *usd);
+void ft_found_and_replace_usd(t_command *command, t_env *envList);
+void replace_env_variables_in_command(t_command *command, t_env *envList);
+int process_single_quoted_argument(t_commandList *commandList, t_command *command, char *token, int argIndex);
+char *extract_single_quoted_argument(char *input);
+int process_double_quoted_argument(t_commandList *commandList, t_command *command, char *token, int argIndex);
+char *extract_double_quoted_argument(char *input);
+int process_quoted_argument(t_commandList *commandList, t_command *command, char *token, int argIndex);
 
 
 
